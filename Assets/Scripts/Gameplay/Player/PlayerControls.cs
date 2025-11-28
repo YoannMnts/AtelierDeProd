@@ -14,6 +14,7 @@ namespace Gameplay.Player
         [field: SerializeField]
         public InputActionAsset InputActionAsset { get; private set; }
         public InputAction MovementInput { get; private set; }
+        public InputAction InteractInput { get; private set; }
 
         private void OnEnable()
         {
@@ -28,7 +29,9 @@ namespace Gameplay.Player
         private void InitInput()
         {
             MovementInput = InputActionAsset.FindActionMap(DEFAULT_MAP).FindAction("Move");
+            InteractInput = InputActionAsset.FindActionMap(DEFAULT_MAP).FindAction("Interact");
             MovementInput?.Enable();
+            InteractInput?.Enable();
             InputActionAsset.FindActionMap(DEFAULT_MAP)?.Enable();
         }
         

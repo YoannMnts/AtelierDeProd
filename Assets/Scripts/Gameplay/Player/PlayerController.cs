@@ -2,6 +2,7 @@ using System;
 using Gameplay.Player;
 using UnityEngine;
 
+[DefaultExecutionOrder(-100)]
 public class PlayerController : MonoBehaviour
 {
     [field : SerializeField]
