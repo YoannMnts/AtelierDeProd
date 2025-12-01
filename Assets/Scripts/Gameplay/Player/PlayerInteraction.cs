@@ -1,19 +1,22 @@
 ﻿using System;
+using Gameplay.Interaction;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Gameplay.Player
 {
+    [DefaultExecutionOrder(1)]
     public class PlayerInteraction : MonoBehaviour, IPlayerComponent
     {
         public PlayerController playerController { get; set; }
+        
+        public event Action OnInteract;
         
         [Header("Interact")]
         [SerializeField] private float interactRange;
 
         private void OnEnable()
         {
-            Debug.Log(playerController);
             playerController.PlayerControls.InteractInput.performed += Interact;
         }
 
@@ -24,7 +27,15 @@ namespace Gameplay.Player
 
         private void Interact(InputAction.CallbackContext context)
         {
-            Debug.Log("Interact");
+            Collider[] colliders = Physics.OverlapSphere(transform.position, interactRange);
+            foreach (var collider in colliders)
+            {
+                if (collider.TryGetComponent(out IInteractable interactable))
+                {
+                    interactable.Interact();
+                    OnInteract?.Invoke();
+                }
+            }
         }
     }
 }
