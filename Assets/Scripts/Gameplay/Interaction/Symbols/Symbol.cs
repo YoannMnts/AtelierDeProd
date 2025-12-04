@@ -6,7 +6,6 @@ namespace Gameplay.Interaction.Symbols
 {
     public class Symbol : MonoBehaviour ,IInteractable
     {
-        
         public void Interact()
         {
             

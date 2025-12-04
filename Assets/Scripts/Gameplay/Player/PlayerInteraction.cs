@@ -10,7 +10,9 @@ namespace Gameplay.Player
     {
         public PlayerController playerController { get; set; }
         
-        public event Action OnInteract;
+        public IInteractable CurrentInteractable { get; private set; }
+        
+        public event Action PlayerInteract;
         
         [Header("Interact")]
         [SerializeField] private float interactRange;
@@ -32,8 +34,9 @@ namespace Gameplay.Player
             {
                 if (collider.TryGetComponent(out IInteractable interactable))
                 {
+                    CurrentInteractable = interactable;
                     interactable.Interact();
-                    OnInteract?.Invoke();
+                    PlayerInteract?.Invoke();
                 }
             }
         }

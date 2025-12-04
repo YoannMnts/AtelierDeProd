@@ -1,5 +1,6 @@
 ﻿using System;
 using Gameplay.Interaction;
+using Gameplay.Interaction.Symbols;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -11,19 +12,25 @@ namespace Gameplay.UI
 
         private void OnEnable()
         {
-            UIManager.PlayerInteraction.OnInteract -= Hide;
-            UIManager.PlayerInteraction.OnInteract += Show;
+            UIManager.PlayerInteraction.PlayerInteract += Check;
         }
 
         private void OnDisable()
         {
-            UIManager.PlayerInteraction.OnInteract -= Show;
-            UIManager.PlayerInteraction.OnInteract += Hide;
+            UIManager.PlayerInteraction.PlayerInteract -= Check;
         }
 
+        public void Check()
+        {
+            if (UIManager.PlayerInteraction.CurrentInteractable is Symbol)
+            {
+                Show();
+            }
+        }
+        
         public void Show()
         {
-            throw new System.NotImplementedException();
+            Debug.Log("Symbol UI Show");
         }
 
         public void Hide()
