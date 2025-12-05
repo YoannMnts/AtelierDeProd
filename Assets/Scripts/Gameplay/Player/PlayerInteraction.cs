@@ -35,7 +35,7 @@ namespace Gameplay.Player
                 if (collider.TryGetComponent(out IInteractable interactable))
                 {
                     CurrentInteractable = interactable;
-                    interactable.Interact();
+                    interactable.Interact(this);
                     PlayerInteract?.Invoke();
                 }
             }

@@ -6,12 +6,20 @@ namespace Gameplay.UI
 {
     public class UIManager : MonoBehaviour
     {
-        [field : SerializeField] 
-        public PlayerInteraction PlayerInteraction { get; private set; }
-
+        public static UIManager instance { get; private set; }
+        
+        [field: SerializeField]
+        public SymbolGroupUI SymbolGroupUI { get; private set; }
+        
+        [field: SerializeField]
+        public CanvasGroup canvasGroup { get; private set; }
         private void Awake()
         {
-            var childsUI = GetComponentsInChildren<IUI>();
+            if (instance == null)
+                instance = this;
+            else if (instance != this)
+                Destroy(gameObject);
+            var childsUI = GetComponentsInChildren<IUIElement>();
             foreach (var ui in childsUI)
             {
                 ui.UIManager = this;

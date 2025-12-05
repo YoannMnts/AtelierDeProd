@@ -1,45 +1,55 @@
 ﻿using System;
 using Gameplay.Interaction;
 using Gameplay.Interaction.Symbols;
+using Gameplay.Player;
 using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Gameplay.UI
 {
-    public class SymbolUI : MonoBehaviour, IUI
+    public class SymbolUI : MonoBehaviour, IUIElement
     {
         [HideInInspector] 
         public UIManager UIManager { get; set; }
-        
-        [field: SerializeField]
-        public CanvasGroup CanvasGroup { get; private set; }
-        
-        private void OnEnable()
-        {
-            UIManager.PlayerInteraction.PlayerInteract += Check;
-        }
+        public CodexSymbol CodexSymbol { get; private set; }
 
-        private void OnDisable()
+        public void Connect(CodexSymbol symbol)
         {
-            UIManager.PlayerInteraction.PlayerInteract -= Check;
-        }
-
-        public void Check()
-        {
-            if (UIManager.PlayerInteraction.CurrentInteractable is Symbol)
+            if (CodexSymbol != null)
             {
-                Show();
+                Disconnect(CodexSymbol);
+            }
+            CodexSymbol = symbol;
+            CodexSymbol.OnTranslationChanged += Check;
+        }
+
+
+        public void Disconnect(CodexSymbol symbol)
+        {
+            if (CodexSymbol == symbol)
+            {
+                CodexSymbol.OnTranslationChanged -= Check;
+                CodexSymbol = null;
             }
         }
         
+        public void Check()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Show()
         {
-            Debug.Log("Symbol UI Show");
+            UIManager.canvasGroup.alpha = 1;
         }
 
         public void Hide()
         {
-            throw new System.NotImplementedException();
+            UIManager.canvasGroup.alpha = 0;
+        }
+        private void Check(CodexSymbol obj)
+        {
+            throw new NotImplementedException();
         }
     }
 }

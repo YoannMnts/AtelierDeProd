@@ -2,6 +2,6 @@
 {
     public interface IPlayerComponent
     {
-        public PlayerController playerController { get; set; }
+        public PlayerController playerController {set; }
     }
 }

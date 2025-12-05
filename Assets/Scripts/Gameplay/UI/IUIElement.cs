@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Gameplay.UI
 {
-    public interface IUI
+    public interface IUIElement
     {
         public UIManager UIManager { get; set; }
         public void Check();
