@@ -8,8 +8,12 @@ namespace Gameplay.UI
 {
     public class SymbolUI : MonoBehaviour, IUI
     {
+        [HideInInspector] 
         public UIManager UIManager { get; set; }
-
+        
+        [field: SerializeField]
+        public CanvasGroup CanvasGroup { get; private set; }
+        
         private void OnEnable()
         {
             UIManager.PlayerInteraction.PlayerInteract += Check;
