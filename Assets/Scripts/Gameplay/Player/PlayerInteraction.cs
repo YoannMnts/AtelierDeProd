@@ -1,9 +1,9 @@
 ﻿using System;
-using Gameplay.Interaction;
+using Ozkaal.Gameplay.Gameplay.Interaction;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Gameplay.Player
+namespace Ozkaal.Gameplay.Gameplay.Player
 {
     [DefaultExecutionOrder(1)]
     public class PlayerInteraction : MonoBehaviour, IPlayerComponent

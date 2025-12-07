@@ -1,9 +1,6 @@
-﻿using System;
-using Gameplay.Player;
-using Gameplay.UI;
-using UnityEngine;
+﻿using Ozkaal.Gameplay.Gameplay.Player;
 
-namespace Gameplay.Interaction
+namespace Ozkaal.Gameplay.Gameplay.Interaction
 {
     public interface IInteractable
     {

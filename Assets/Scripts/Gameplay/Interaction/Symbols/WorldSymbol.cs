@@ -1,10 +1,7 @@
-﻿using System;
-using Core.Datas.SymbolDatas;
-using Gameplay.Player;
-using Gameplay.UI;
+﻿using Ozkaal.Core.Core.Datas.SymbolDatas;
 using UnityEngine;
 
-namespace Gameplay.Interaction.Symbols
+namespace Ozkaal.Gameplay.Gameplay.Interaction.Symbols
 {
     public class WorldSymbol : MonoBehaviour
     {

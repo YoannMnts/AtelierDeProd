@@ -1,8 +1,6 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.Serialization;
+﻿using UnityEngine;
 
-namespace Gameplay.Player
+namespace Ozkaal.Gameplay.Gameplay.Player
 {
     public class PlayerMovement : MonoBehaviour, IPlayerComponent
     {

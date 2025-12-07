@@ -1,9 +1,8 @@
-﻿using System;
-using Gameplay.Player;
-using Gameplay.UI;
+﻿using Ozkaal.Gameplay.Gameplay.Player;
+using Ozkaal.Gameplay.Gameplay.UI;
 using UnityEngine;
 
-namespace Gameplay.Interaction.Symbols
+namespace Ozkaal.Gameplay.Gameplay.Interaction.Symbols
 {
     public class WorldSymbolGroup : MonoBehaviour, IInteractable
     {

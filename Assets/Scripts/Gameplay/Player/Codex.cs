@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Core.Datas.SymbolDatas;
-using TMPro;
+﻿using System.Collections.Generic;
+using Ozkaal.Core.Core.Datas.SymbolDatas;
 using UnityEngine;
+using UnityEngine.Pool;
 
-namespace Gameplay.Player
+namespace Ozkaal.Gameplay.Gameplay.Player
 {
     public class Codex
     {

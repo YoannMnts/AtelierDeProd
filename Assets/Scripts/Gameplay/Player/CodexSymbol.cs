@@ -1,7 +1,7 @@
 ﻿using System;
-using Core.Datas.SymbolDatas;
+using Ozkaal.Core.Core.Datas.SymbolDatas;
 
-namespace Gameplay.Player
+namespace Ozkaal.Gameplay.Gameplay.Player
 {
     public class CodexSymbol
     {
@@ -22,11 +22,13 @@ namespace Gameplay.Player
         {
             Translation = translation;
             Discover();
+            OnTranslationChanged?.Invoke(this);
         }
 
         public void Discover()
         {
             IsDiscovered = true;
+            OnDiscovered?.Invoke(this);
         }
     }
 }

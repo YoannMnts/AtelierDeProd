@@ -1,18 +1,19 @@
 ﻿using System;
-using Gameplay.Interaction;
-using Gameplay.Interaction.Symbols;
-using Gameplay.Player;
-using Unity.VisualScripting;
+using Ozkaal.Gameplay.Gameplay.Player;
+using TMPro;
 using UnityEngine;
 
-namespace Gameplay.UI
+namespace Ozkaal.Gameplay.Gameplay.UI
 {
     public class SymbolUI : MonoBehaviour, IUIElement
     {
         [HideInInspector] 
         public UIManager UIManager { get; set; }
         public CodexSymbol CodexSymbol { get; private set; }
-
+        
+        [SerializeField]
+        private TMP_InputField inputField;
+        
         public void Connect(CodexSymbol symbol)
         {
             if (CodexSymbol != null)
@@ -23,7 +24,6 @@ namespace Gameplay.UI
             CodexSymbol.OnTranslationChanged += Check;
         }
 
-
         public void Disconnect(CodexSymbol symbol)
         {
             if (CodexSymbol == symbol)
@@ -32,7 +32,11 @@ namespace Gameplay.UI
                 CodexSymbol = null;
             }
         }
-        
+        private void Check(CodexSymbol obj)
+        {
+            inputField.text = obj.Translation;
+        }
+
         public void Check()
         {
             throw new NotImplementedException();
@@ -47,9 +51,12 @@ namespace Gameplay.UI
         {
             UIManager.canvasGroup.alpha = 0;
         }
-        private void Check(CodexSymbol obj)
+
+        public void OnEndEdit(string translation)
         {
-            throw new NotImplementedException();
+            CodexSymbol.SetTranslation(translation);
+            Debug.Log(translation);
         }
+        
     }
 }

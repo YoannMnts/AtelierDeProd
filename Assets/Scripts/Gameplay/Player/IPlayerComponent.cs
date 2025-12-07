@@ -1,4 +1,4 @@
-﻿namespace Gameplay.Player
+﻿namespace Ozkaal.Gameplay.Gameplay.Player
 {
     public interface IPlayerComponent
     {

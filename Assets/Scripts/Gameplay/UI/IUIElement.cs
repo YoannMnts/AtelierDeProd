@@ -1,7 +1,4 @@
-﻿using Unity.VisualScripting;
-using UnityEngine;
-
-namespace Gameplay.UI
+﻿namespace Ozkaal.Gameplay.Gameplay.UI
 {
     public interface IUIElement
     {

@@ -1,8 +1,6 @@
-﻿using System;
-using Gameplay.Player;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Gameplay.UI
+namespace Ozkaal.Gameplay.Gameplay.UI
 {
     public class UIManager : MonoBehaviour
     {

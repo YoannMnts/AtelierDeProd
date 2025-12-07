@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Core.Datas.SymbolDatas;
-using Gameplay.Interaction.Symbols;
-using Gameplay.Player;
+﻿using System.Collections.Generic;
+using Ozkaal.Core.Core.Datas.SymbolDatas;
+using Ozkaal.Gameplay.Gameplay.Interaction.Symbols;
+using Ozkaal.Gameplay.Gameplay.Player;
 using UnityEngine;
 
-namespace Gameplay.UI
+namespace Ozkaal.Gameplay.Gameplay.UI
 {
     public class SymbolGroupUI : MonoBehaviour
     {
@@ -14,10 +13,15 @@ namespace Gameplay.UI
         
         public Codex CurrentCodex { get; private set; }
         public WorldSymbolGroup CurrentGroup { get; private set; }
+        
+        
         [SerializeField]
         private Transform root;
+        
         [SerializeField]
         private SymbolUI prefab;
+        
+        
         private Dictionary<string, SymbolUI> symbols;
 
         private void Awake()
@@ -51,7 +55,6 @@ namespace Gameplay.UI
                     symbols[symbolData.SymbolID] = instance;
                 }
             }
-            
         }
         
         public void Disconnect(Codex codex, WorldSymbolGroup group)

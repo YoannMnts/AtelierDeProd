@@ -1,9 +1,7 @@
-﻿using System;
-using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Gameplay.Player
+namespace Ozkaal.Gameplay.Gameplay.Player
 {
     public class PlayerControls : MonoBehaviour, IPlayerComponent
     {
