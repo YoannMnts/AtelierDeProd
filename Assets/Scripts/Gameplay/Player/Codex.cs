@@ -5,8 +5,10 @@ using UnityEngine.Pool;
 
 namespace Ozkaal.Gameplay.Gameplay.Player
 {
-    public class Codex
+    public class Codex : IPlayerComponent
     {
+        public PlayerController playerController { get; set; }
+        
         private Dictionary<string, CodexSymbol> symbols = new ();
 
         public Codex()
