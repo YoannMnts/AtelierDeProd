@@ -10,6 +10,9 @@ namespace Ozkaal.Gameplay.Gameplay.UI
         public SymbolGroupUI SymbolGroupUI { get; private set; }
         
         [field: SerializeField]
+        public CodexUI CodexUI { get; private set; }
+        
+        [field: SerializeField]
         public CanvasGroup canvasGroup { get; private set; }
         private void Awake()
         {

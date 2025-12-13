@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Ozkaal.Gameplay.Gameplay.Player
@@ -13,13 +14,23 @@ namespace Ozkaal.Gameplay.Gameplay.Player
         public Codex Codex { get; private set; }
     
         public IPlayerComponent[] PlayerComponents { get; private set; }
-    
+        
         private void Awake()
         {
             Codex = new Codex();
             PlayerComponents = GetComponentsInChildren<IPlayerComponent>();
             foreach (IPlayerComponent component in PlayerComponents)
                 component.playerController = this;
+        }
+
+        private void OnEnable()
+        {
+            PlayerControls.CodexInput.performed += Codex.ConnectToUI;
+        }
+
+        private void OnDisable()
+        {
+            PlayerControls.CodexInput.performed -= Codex.ConnectToUI;
         }
     }
 }
