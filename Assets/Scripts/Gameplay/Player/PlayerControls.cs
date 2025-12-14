@@ -16,6 +16,7 @@ namespace Ozkaal.Gameplay.Gameplay.Player
         public InputAction MovementInput { get; private set; }
         public InputAction InteractInput { get; private set; }
         public InputAction CodexInput { get; private set; }
+        public InputAction JumpInput { get; private set; }
 
         private void OnEnable()
         {
@@ -32,9 +33,11 @@ namespace Ozkaal.Gameplay.Gameplay.Player
             MovementInput = InputActionAsset.FindActionMap(DEFAULT_MAP).FindAction("Move");
             InteractInput = InputActionAsset.FindActionMap(DEFAULT_MAP).FindAction("Interact");
             CodexInput = InputActionAsset.FindActionMap(DEFAULT_MAP).FindAction("Codex");
+            JumpInput = InputActionAsset.FindActionMap(DEFAULT_MAP).FindAction("Jump");
             MovementInput?.Enable();
             InteractInput?.Enable();
             CodexInput?.Enable();
+            JumpInput?.Enable();
             InputActionAsset.FindActionMap(DEFAULT_MAP)?.Enable();
         }
         
@@ -54,6 +57,11 @@ namespace Ozkaal.Gameplay.Gameplay.Player
             {
                 CodexInput?.Disable();
                 CodexInput = null;
+            }
+            if (JumpInput != null)
+            {
+                JumpInput?.Disable();
+                JumpInput = null;
             }
             InputActionAsset.FindActionMap(DEFAULT_MAP)?.Disable();
         }

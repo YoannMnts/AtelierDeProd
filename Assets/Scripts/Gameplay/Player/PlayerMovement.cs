@@ -38,6 +38,7 @@ namespace Ozkaal.Gameplay.Gameplay.Player
 
         private void Update()
         {
+            IsJumping = !CharacterController.isGrounded;
             ComputeDirection();
             ComputeTargetVelocity();
         }
@@ -88,7 +89,6 @@ namespace Ozkaal.Gameplay.Gameplay.Player
                 IsJumping = true;
                 CharacterController.Move(Vector3.up * jumpForce);
             }
-            
         }
     }
 }
