@@ -7,6 +7,8 @@ using UnityEngine.Pool;
 
 namespace Ozkaal.Gameplay.Gameplay.UI
 {
+    //Make for POC :
+    //Connect + Disconnect + CurrentCodex properties
     public class CodexUI : MonoBehaviour
     {
         [SerializeField]
@@ -15,8 +17,6 @@ namespace Ozkaal.Gameplay.Gameplay.UI
         private Transform root;
         [SerializeField]
         private CanvasGroup canvasGroup;
-        
-        private List<CodexSymbol> symbols = new List<CodexSymbol>();
         
         public Codex CurrentCodex { get; private set; }
         
@@ -34,16 +34,15 @@ namespace Ozkaal.Gameplay.Gameplay.UI
                 Disconnect(CurrentCodex);
             }
             CurrentCodex = codex;
-            CurrentCodex.GetAllDiscoveredSymbols(symbols);
-            for (int i = 0; i < symbols.Count; i++)
+            foreach ((string key, CodexSymbol value) in CurrentCodex.Symbols)
             {
-                SymbolUI instance = Instantiate(prefab, root);
-                SymbolData symbolData = symbols[i].SymbolData;
-                if (codex.TryGetCodexSymbol(symbolData.SymbolID, out CodexSymbol symbol))
+                Debug.Log($"Data : {value.SymbolData}");
+                if (!CurrentCodex.IsSymbolDiscovered(key))
                 {
-                    instance.Connect(symbol);
+                    break;
                 }
-                Debug.Log("boucle");
+                SymbolUI instance = Instantiate(prefab, root);
+                instance.Connect(value);
             }
             Debug.Log("aaaaaa");
             canvasGroup.alpha = 1;

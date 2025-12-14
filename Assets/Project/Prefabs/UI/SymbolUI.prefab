@@ -396,6 +396,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.UI.SymbolUI
   inputField: {fileID: 5451636012297514528}
+  iconImage: {fileID: 6438871207726012937}
 --- !u!1 &7430276034229400894
 GameObject:
   m_ObjectHideFlags: 0

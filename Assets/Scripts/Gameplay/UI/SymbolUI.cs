@@ -1,19 +1,23 @@
 ﻿using System;
+using Ozkaal.Core.Core.Datas.SymbolDatas;
 using Ozkaal.Gameplay.Gameplay.Player;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Ozkaal.Gameplay.Gameplay.UI
 {
-    public class SymbolUI : MonoBehaviour, IUIElement
+    //Make for POC :
+    //CreateUI method
+    public class SymbolUI : MonoBehaviour
     {
-        [HideInInspector] 
-        public UIManager UIManager { get; set; }
         public CodexSymbol CodexSymbol { get; private set; }
         
         [SerializeField]
         private TMP_InputField inputField;
-        
+        [SerializeField]
+        private Image iconImage;
+
         public void Connect(CodexSymbol symbol)
         {
             if (CodexSymbol != null)
@@ -22,6 +26,7 @@ namespace Ozkaal.Gameplay.Gameplay.UI
             }
             CodexSymbol = symbol;
             CodexSymbol.OnTranslationChanged += Check;
+            UpdateUI(CodexSymbol);
         }
 
         public void Disconnect(CodexSymbol symbol)
@@ -37,21 +42,12 @@ namespace Ozkaal.Gameplay.Gameplay.UI
             inputField.text = obj.Translation;
         }
 
-        public void Check()
+        private void UpdateUI(CodexSymbol codexSymbol)
         {
-            throw new NotImplementedException();
+            iconImage.sprite = codexSymbol.SymbolData.Icon;
+            inputField.text = codexSymbol.Translation;
         }
-
-        public void Show()
-        {
-            UIManager.canvasGroup.alpha = 1;
-        }
-
-        public void Hide()
-        {
-            UIManager.canvasGroup.alpha = 0;
-        }
-
+        
         public void OnEndEdit(string translation)
         {
             CodexSymbol.SetTranslation(translation);

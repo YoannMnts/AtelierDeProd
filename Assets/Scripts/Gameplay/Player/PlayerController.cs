@@ -3,6 +3,10 @@ using UnityEngine;
 
 namespace Ozkaal.Gameplay.Gameplay.Player
 {
+    [DefaultExecutionOrder(-5)]
+    //Make for POC :
+    //OnEnable + OnDisable for CodexUI
+    //NEED TO REWORK
     public class PlayerController : MonoBehaviour
     {
         [field : SerializeField]

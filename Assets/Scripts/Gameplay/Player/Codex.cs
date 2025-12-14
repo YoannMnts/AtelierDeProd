@@ -8,8 +8,14 @@ using UnityEngine.Pool;
 
 namespace Ozkaal.Gameplay.Gameplay.Player
 {
+    //Make for POC :
+    //Properties for CodexSymbol Dictionary + ConnectToUI + temp
     public class Codex
     {
+        public Dictionary<string, CodexSymbol> Symbols => symbols;
+        public bool TryGetCodexSymbol(string guid, out CodexSymbol symbol) => symbols.TryGetValue(guid, out symbol);
+        
+        
         private Dictionary<string, CodexSymbol> symbols = new ();
 
         private bool temp;
@@ -55,18 +61,5 @@ namespace Ozkaal.Gameplay.Gameplay.Player
             else
                 UIManager.instance.CodexUI.Disconnect(this);
         }
-
-        public void GetAllDiscoveredSymbols(List<CodexSymbol> codexSymbols)
-        {
-            foreach ((string key, CodexSymbol value) in symbols)
-            {
-                if (value.IsDiscovered && !codexSymbols.Contains(value))
-                {
-                    codexSymbols.Add(value);
-                }
-            }
-        }
-        
-        public bool TryGetCodexSymbol(string guid, out CodexSymbol symbol) => symbols.TryGetValue(guid, out symbol);
     }
 }

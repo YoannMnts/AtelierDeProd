@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 
 namespace Ozkaal.Gameplay.Gameplay.Player
 {
-    [DefaultExecutionOrder(1)]
     public class PlayerInteraction : MonoBehaviour, IPlayerComponent
     {
         public PlayerController playerController { get; set; }

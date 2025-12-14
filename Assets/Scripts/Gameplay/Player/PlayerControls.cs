@@ -3,6 +3,8 @@ using UnityEngine.InputSystem;
 
 namespace Ozkaal.Gameplay.Gameplay.Player
 {
+    [DefaultExecutionOrder(-10)]
+    //CodexInput but normally it's fine
     public class PlayerControls : MonoBehaviour, IPlayerComponent
     {
         private const string DEFAULT_MAP = "Default";

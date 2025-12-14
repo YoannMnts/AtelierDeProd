@@ -2,6 +2,8 @@
 
 namespace Ozkaal.Gameplay.Gameplay.UI
 {
+    //Make for POC :
+    //CodexUI SerializeField
     public class UIManager : MonoBehaviour
     {
         public static UIManager instance { get; private set; }
