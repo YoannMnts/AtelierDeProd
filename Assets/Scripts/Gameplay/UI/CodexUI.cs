@@ -39,7 +39,7 @@ namespace Ozkaal.Gameplay.Gameplay.UI
                 Debug.Log($"Data : {value.SymbolData}");
                 if (!CurrentCodex.IsSymbolDiscovered(key))
                 {
-                    break;
+                    continue;
                 }
                 SymbolUI instance = Instantiate(prefab, root);
                 instance.Connect(value);
