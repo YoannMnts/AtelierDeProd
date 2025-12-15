@@ -84,7 +84,6 @@ namespace Ozkaal.Gameplay.Gameplay.Player
             if (IsGrounded && dot >= 0)
                 verticalVelocity = Vector3.zero;
             CurrentVelocity = finalTargetVelocity + verticalVelocity;
-            Debug.Log(CurrentVelocity);
             rb.linearVelocity = CurrentVelocity;
         }
 

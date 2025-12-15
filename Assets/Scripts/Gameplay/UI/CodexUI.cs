@@ -27,24 +27,22 @@ namespace Ozkaal.Gameplay.Gameplay.UI
                 Destroy(t.gameObject);
             }
         }
-        public void Connect(Codex codex)
+        public void Connect(Codex codex,Dictionary<string, CodexSymbol> symbols)
         {
             if (CurrentCodex != null)
             {
                 Disconnect(CurrentCodex);
             }
             CurrentCodex = codex;
-            foreach ((string key, CodexSymbol value) in CurrentCodex.Symbols)
+            foreach ((string guid, CodexSymbol codexSymbol) in symbols)
             {
-                Debug.Log($"Data : {value.SymbolData}");
-                if (!CurrentCodex.IsSymbolDiscovered(key))
+                if (!CurrentCodex.IsSymbolDiscovered(guid))
                 {
-                    break;
+                    continue;
                 }
                 SymbolUI instance = Instantiate(prefab, root);
-                instance.Connect(value);
+                instance.Connect(codexSymbol);
             }
-            Debug.Log("aaaaaa");
             canvasGroup.alpha = 1;
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
@@ -60,7 +58,6 @@ namespace Ozkaal.Gameplay.Gameplay.UI
             {
                 Destroy(t.gameObject);
             }
-            Debug.Log("bbbbbb");
             canvasGroup.alpha = 0;
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;

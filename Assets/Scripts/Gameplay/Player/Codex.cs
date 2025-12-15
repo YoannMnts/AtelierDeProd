@@ -12,7 +12,6 @@ namespace Ozkaal.Gameplay.Gameplay.Player
     //Properties for CodexSymbol Dictionary + ConnectToUI + temp
     public class Codex
     {
-        public Dictionary<string, CodexSymbol> Symbols => symbols;
         public bool TryGetCodexSymbol(string guid, out CodexSymbol symbol) => symbols.TryGetValue(guid, out symbol);
         
         
@@ -57,9 +56,13 @@ namespace Ozkaal.Gameplay.Gameplay.Player
         {
             temp = !temp;
             if (temp)
-                UIManager.instance.CodexUI.Connect(this);
+            {
+                UIManager.instance.CodexUI.Connect(this, symbols);
+            }
             else
+            {
                 UIManager.instance.CodexUI.Disconnect(this);
+            }
         }
     }
 }
