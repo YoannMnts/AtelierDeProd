@@ -271,7 +271,7 @@ GameObject:
   - component: {fileID: 5506466806873798740}
   m_Layer: 0
   m_Name: Normal
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -372,7 +372,7 @@ GameObject:
   - component: {fileID: 4097988304375244549}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -452,11 +452,11 @@ GameObject:
   - component: {fileID: 2259940906627065100}
   m_Layer: 0
   m_Name: Crouch
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &148473984702355392
 Transform:
   m_ObjectHideFlags: 0
@@ -494,7 +494,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0, y: -0.5, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8308910943684462334
 GameObject:
   m_ObjectHideFlags: 0
@@ -521,7 +521,7 @@ Transform:
   m_GameObject: {fileID: 8308910943684462334}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.95629, y: 1, z: 3.9173298}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -630,13 +630,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Player.PlayerMovement
   rb: {fileID: 465196323751487630}
+  renderer: {fileID: 1484820363622569232}
   maxSpeed: 10
   directionAlignDamping: 20
   acceleration: 2
   deceleration: 2
   jumpForce: 10
   jumpCoyoteTime: 0
-  crouchSpeed: 0
+  crouchSpeed: 5
   gravityMultiplier: 0.15
   groundLayer:
     serializedVersion: 2

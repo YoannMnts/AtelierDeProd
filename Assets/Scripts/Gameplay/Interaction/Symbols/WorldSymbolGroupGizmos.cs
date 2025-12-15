@@ -23,5 +23,27 @@ namespace Ozkaal.Gameplay.Gameplay.Interaction.Symbols
             boxCollider.center = new Vector3(groupCenter, 0, 0);
             boxCollider.size = new Vector3(groupSize, 1, 1);
         }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            Debug.Log(other.gameObject.name);
+            if (other.CompareTag("Player"))
+            {
+                for (int i = 0; i < Symbols.Length; i++)
+                {
+                    Symbols[i].GetComponent<MeshRenderer>().material.color = Color.green;
+                }
+            }
+        }
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                for (int i = 0; i < Symbols.Length; i++)
+                {
+                    Symbols[i].GetComponent<MeshRenderer>().material.color = Color.grey;
+                }
+            }
+        }
     }
 }
