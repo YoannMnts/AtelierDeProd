@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6373df5757f64915b746a4a36992be2d, type: 3}
   m_Name: SymbolData_Specie
   m_EditorClassIdentifier: Ozkaal.Core::Ozkaal.Core.Core.Datas.SymbolDatas.SymbolData
-  <Prefab>k__BackingField: {fileID: 0}
+  <Prefab>k__BackingField: {fileID: 1288382097387946424, guid: b65bdb6d762be1b4bb3f3df0a3093740, type: 3}
   <Icon>k__BackingField: {fileID: 21300000, guid: 3a245f5e347bf3e4d996d6b90d214170, type: 3}
