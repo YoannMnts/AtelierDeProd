@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: SymbolData_Water
   m_EditorClassIdentifier: Ozkaal.Core::Ozkaal.Core.Core.Datas.SymbolDatas.SymbolData
   <Prefab>k__BackingField: {fileID: 0}
-  <Icon>k__BackingField: {fileID: 0}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 56a0bdb5b69e07c4888f2c6963425709, type: 3}

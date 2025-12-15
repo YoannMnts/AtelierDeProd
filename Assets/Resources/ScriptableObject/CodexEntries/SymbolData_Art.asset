@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: SymbolData_Art
   m_EditorClassIdentifier: Ozkaal.Core::Ozkaal.Core.Core.Datas.SymbolDatas.SymbolData
   <Prefab>k__BackingField: {fileID: 0}
-  <Icon>k__BackingField: {fileID: 0}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 2e7c491be53ce564e808718422e9840a, type: 3}
