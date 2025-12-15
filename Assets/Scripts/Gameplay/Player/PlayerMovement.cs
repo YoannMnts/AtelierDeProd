@@ -119,7 +119,6 @@ namespace Ozkaal.Gameplay.Gameplay.Player
 
         private void CheckGround()
         {
-            groundCheckDistance = IsCrouching ? groundCheckDistance * .5f : groundCheckDistance;
             Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, groundCheckDistance, groundLayer);
             if (hit.collider)
             {
