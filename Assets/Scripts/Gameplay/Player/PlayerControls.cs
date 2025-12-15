@@ -17,6 +17,7 @@ namespace Ozkaal.Gameplay.Gameplay.Player
         public InputAction InteractInput { get; private set; }
         public InputAction CodexInput { get; private set; }
         public InputAction JumpInput { get; private set; }
+        public InputAction CrouchInput { get; private set; }
 
         private void OnEnable()
         {
@@ -34,10 +35,12 @@ namespace Ozkaal.Gameplay.Gameplay.Player
             InteractInput = InputActionAsset.FindActionMap(DEFAULT_MAP).FindAction("Interact");
             CodexInput = InputActionAsset.FindActionMap(DEFAULT_MAP).FindAction("Codex");
             JumpInput = InputActionAsset.FindActionMap(DEFAULT_MAP).FindAction("Jump");
+            CrouchInput = InputActionAsset.FindActionMap(DEFAULT_MAP).FindAction("Crouch");
             MovementInput?.Enable();
             InteractInput?.Enable();
             CodexInput?.Enable();
             JumpInput?.Enable();
+            CrouchInput?.Enable();
             InputActionAsset.FindActionMap(DEFAULT_MAP)?.Enable();
         }
         
@@ -62,6 +65,12 @@ namespace Ozkaal.Gameplay.Gameplay.Player
             {
                 JumpInput?.Disable();
                 JumpInput = null;
+            }
+
+            if (CrouchInput != null)
+            {
+                CrouchInput?.Disable();
+                CrouchInput = null;
             }
             InputActionAsset.FindActionMap(DEFAULT_MAP)?.Disable();
         }
