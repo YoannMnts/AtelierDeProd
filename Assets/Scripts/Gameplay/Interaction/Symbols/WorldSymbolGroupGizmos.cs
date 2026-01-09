@@ -5,6 +5,7 @@ namespace Ozkaal.Gameplay.Gameplay.Interaction.Symbols
 {
     public partial class WorldSymbolGroup
     {
+        /*
         private GameObject firstSymbol;
         private GameObject lastSymbol;
         
@@ -45,5 +46,6 @@ namespace Ozkaal.Gameplay.Gameplay.Interaction.Symbols
                 }
             }
         }
+        */
     }
 }

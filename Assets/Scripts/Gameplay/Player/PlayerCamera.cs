@@ -2,8 +2,8 @@
 
 namespace Ozkaal.Gameplay.Gameplay.Player
 {
-    public class PlayerCamera : MonoBehaviour, IPlayerComponent
+    public class PlayerCamera : MonoBehaviour
     {
-        public PlayerController playerController { get; set; }
+        
     }
 }

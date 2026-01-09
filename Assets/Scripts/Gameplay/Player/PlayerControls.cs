@@ -5,11 +5,9 @@ namespace Ozkaal.Gameplay.Gameplay.Player
 {
     [DefaultExecutionOrder(-10)]
     //CodexInput but normally it's fine
-    public class PlayerControls : MonoBehaviour, IPlayerComponent
+    public class PlayerControls : MonoBehaviour
     {
         private const string DEFAULT_MAP = "Default";
-        
-        public PlayerController playerController { get; set; }
         
         [field: SerializeField]
         public InputActionAsset InputActionAsset { get; private set; }

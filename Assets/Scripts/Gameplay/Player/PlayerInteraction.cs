@@ -5,9 +5,9 @@ using UnityEngine.InputSystem;
 
 namespace Ozkaal.Gameplay.Gameplay.Player
 {
-    public class PlayerInteraction : MonoBehaviour, IPlayerComponent
+    public class PlayerInteraction : MonoBehaviour
     {
-        public PlayerController playerController { get; set; }
+        public PlayerController PlayerController => PlayerController.Instance;
         
         public IInteractable CurrentInteractable { get; private set; }
         
@@ -18,12 +18,12 @@ namespace Ozkaal.Gameplay.Gameplay.Player
 
         private void OnEnable()
         {
-            playerController.PlayerControls.InteractInput.performed += Interact;
+            PlayerController.Instance.PlayerControls.InteractInput.performed += Interact;
         }
 
         private void OnDisable()
         {
-            playerController.PlayerControls.InteractInput.performed -= Interact;
+            PlayerController.Instance.PlayerControls.InteractInput.performed -= Interact;
         }
 
         private void Interact(InputAction.CallbackContext context)

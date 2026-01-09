@@ -9,6 +9,8 @@ namespace Ozkaal.Gameplay.Gameplay.Player
     //NEED TO REWORK
     public class PlayerController : MonoBehaviour
     {
+        public static PlayerController Instance { get; private set; }
+        
         [field : SerializeField]
         public PlayerMovement PlayerMovement { get; private set; }
         [field : SerializeField]
@@ -21,6 +23,9 @@ namespace Ozkaal.Gameplay.Gameplay.Player
         
         private void Awake()
         {
+            if (Instance != null)
+                Destroy(gameObject);
+            Instance = this;
             Codex = new Codex();
             PlayerComponents = GetComponentsInChildren<IPlayerComponent>();
             foreach (IPlayerComponent component in PlayerComponents)
