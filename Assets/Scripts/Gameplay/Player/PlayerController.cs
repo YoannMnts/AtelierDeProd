@@ -34,12 +34,12 @@ namespace Ozkaal.Gameplay.Gameplay.Player
 
         private void OnEnable()
         {
-            PlayerControls.CodexInput.performed += Codex.ConnectToUI;
+            //PlayerControls.CodexInput.performed += Codex.ConnectToUI;
         }
 
         private void OnDisable()
         {
-            PlayerControls.CodexInput.performed -= Codex.ConnectToUI;
+            //PlayerControls.CodexInput.performed -= Codex.ConnectToUI;
         }
     }
 }

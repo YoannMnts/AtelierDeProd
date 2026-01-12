@@ -3,7 +3,7 @@
     "name": "PlayerInput",
     "maps": [
         {
-            "name": "Default",
+            "name": "Player",
             "id": "8a400e11-6531-4848-8cc9-1af19e3c5859",
             "actions": [
                 {
@@ -153,6 +153,12 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "UI",
+            "id": "52b00de0-8c95-4465-ba3f-883cc4cbb76e",
+            "actions": [],
+            "bindings": []
         }
     ],
     "controlSchemes": []

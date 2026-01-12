@@ -1,81 +1,54 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.InputSystem;
+using static PlayerInputAction;
+
 
 namespace Ozkaal.Gameplay.Gameplay.Player
 {
     [DefaultExecutionOrder(-10)]
-    //CodexInput but normally it's fine
-    public class PlayerControls : MonoBehaviour
+    [CreateAssetMenu(fileName = "PlayerControls", menuName = "Player/Controls")]
+    public class PlayerControls : ScriptableObject, IPlayerActions
     {
-        private const string DEFAULT_MAP = "Default";
-        
-        [field: SerializeField]
-        public InputActionAsset InputActionAsset { get; private set; }
-        public InputAction MovementInput { get; private set; }
-        public InputAction InteractInput { get; private set; }
-        public InputAction CodexInput { get; private set; }
-        public InputAction JumpInput { get; private set; }
-        public InputAction CrouchInput { get; private set; }
+       public event Action<Vector2> Move = delegate { };
+       
+       PlayerInputAction inputActions;
+       
+       public Vector3 Direction => inputActions.Player.Move.ReadValue<Vector2>();
 
-        private void OnEnable()
+       private void OnEnable()
+       {
+          if (inputActions == null)
+          {
+             inputActions = new PlayerInputAction();
+             inputActions.Player.SetCallbacks(this);
+          }
+          inputActions.Enable();
+       }
+
+       public void OnMove(InputAction.CallbackContext context)
         {
-            InitInput();
+           Move.Invoke(context.ReadValue<Vector2>());
         }
 
-        private void OnDisable()
+        public void OnInteract(InputAction.CallbackContext context)
         {
-            DeinitInput();
+           //aaaaa
         }
 
-        private void InitInput()
+        public void OnCodex(InputAction.CallbackContext context)
         {
-            MovementInput = InputActionAsset.FindActionMap(DEFAULT_MAP).FindAction("Move");
-            InteractInput = InputActionAsset.FindActionMap(DEFAULT_MAP).FindAction("Interact");
-            CodexInput = InputActionAsset.FindActionMap(DEFAULT_MAP).FindAction("Codex");
-            JumpInput = InputActionAsset.FindActionMap(DEFAULT_MAP).FindAction("Jump");
-            CrouchInput = InputActionAsset.FindActionMap(DEFAULT_MAP).FindAction("Crouch");
-            MovementInput?.Enable();
-            InteractInput?.Enable();
-            CodexInput?.Enable();
-            JumpInput?.Enable();
-            CrouchInput?.Enable();
-            InputActionAsset.FindActionMap(DEFAULT_MAP)?.Enable();
+           //aaaaa
         }
-        
-        private void DeinitInput()
-        {
-            if (MovementInput != null)
-            {
-                MovementInput?.Disable();
-                MovementInput = null;
-            }
-            if (InteractInput != null)
-            {
-                InteractInput?.Disable();
-                InteractInput = null;
-            }
-            if (CodexInput != null)
-            {
-                CodexInput?.Disable();
-                CodexInput = null;
-            }
-            if (JumpInput != null)
-            {
-                JumpInput?.Disable();
-                JumpInput = null;
-            }
 
-            if (CrouchInput != null)
-            {
-                CrouchInput?.Disable();
-                CrouchInput = null;
-            }
-            InputActionAsset.FindActionMap(DEFAULT_MAP)?.Disable();
-        }
-        
-        public Vector2 GetMovementInput()
+        public void OnJump(InputAction.CallbackContext context)
         {
-            return MovementInput?.ReadValue<Vector2>() ?? Vector2.zero;
+           //aaaaa
+        }
+
+        public void OnCrouch(InputAction.CallbackContext context)
+        {
+           //aaaaa
         }
     }
 }

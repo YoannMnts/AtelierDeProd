@@ -6,145 +6,74 @@ using UnityEngine.Serialization;
 
 namespace Ozkaal.Gameplay.Gameplay.Player
 {
-    //make for POC:
-    //Jump + Crouch + Gravity + renderer + CharacterController --> Rigidbody
     public class PlayerMovement : MonoBehaviour
     {
-        public Vector3 Direction { get; private set; }
-        public Vector3 TargetVelocity { get; private set; }
-        public Vector3 CurrentVelocity { get; private set; }
+        [Header("References")]
+        [SerializeField] CharacterController controller;
+        [SerializeField] PlayerControls controls;
         
-        public bool IsCrouching { get; private set; }
-        
-        
-        [Header("Component")]
-        [SerializeField] private CharacterController controller;
-        [SerializeField] private new GameObject renderer;
-        
-        [Header("Movement")] 
-        [SerializeField] private float maxSpeed; 
-        [SerializeField] private float directionAlignDamping; 
-        [SerializeField] private float acceleration; 
-        [SerializeField] private float deceleration;
-        
-        [Header("Jump")]
-        [SerializeField] private float jumpForce;
-        [SerializeField] private float jumpHeight;
-        [SerializeField] private float jumpTime;
-        [SerializeField] private float jumpCoyoteTime;
-        private bool isJumpPressed;
-        private bool isJumping;
-        
-        [Header("Crouch")]
-        [SerializeField] private float crouchSpeed;
-        
-        [Header("Gravity")]
-        [SerializeField] private Vector3 gravity;
-        [SerializeField] private Vector3 groundedGravity;
-        [SerializeField] private float gravityMultiplier;
-        private Vector3 currentGravity;
-        
-        [Header("Raycasts")]
-        [SerializeField] private LayerMask groundLayer;
-        [SerializeField] private float groundCheckDistance;
+        [Header("Settigns")]
+        [SerializeField] float moveSpeed = 10f;
+        [SerializeField] float RotationSpeed = 100f;
+        [SerializeField] float smoothTime = 0.2f;
 
-        private void OnValidate()
-        {
-            gravity = Physics.gravity * gravityMultiplier;
-        }
+        private const float ZERO_F = 0f;
+        private Transform mainCam;
 
-        private void OnEnable()
-        {
-            //PlayerController.Instance.PlayerControls.JumpInput.performed += ApplyJumpForce;
-        }
+        private float currentSpeed;
+        private float velocity;
 
-        private void OnDisable()
+        private void Awake()
         {
-            //PlayerController.Instance.PlayerControls.JumpInput.performed -= ApplyJumpForce;
+            mainCam = Camera.main.transform;
         }
 
         private void Update()
         {
-            ComputeDirection();
-            ComputeTargetVelocity();
-            ComputeGravity();
-            ComputeJump();
-            //Crouch();
-            //Debug.Log(gravity);
+            HandleMovement();
+            //UpdateAnimator();
         }
 
-        private void FixedUpdate()
+        private void HandleMovement()
         {
-            ApplyVelocity();
-        }
-
-        private void ApplyVelocity()
-        {
-            Debug.Log(TargetVelocity);
-            controller.Move(TargetVelocity * Time.deltaTime);
-        }
-
-        private void ComputeTargetVelocity()
-        {   
-            var lastTargetVelocity = TargetVelocity;
-
-            var wantToStop = Direction.sqrMagnitude < 0.1f;
+            var movementDirection = new Vector3(controls.Direction.x, 0, controls.Direction.y).normalized;
+            //controller.Move(movementDirection * (Time.deltaTime * moveSpeed));
             
-            var finalTargetSpeed = wantToStop ? 0 : maxSpeed;
-            var finalTargetVelocity = Direction * finalTargetSpeed;
-            
-            var targetVelocity = Vector3.Lerp(
-                lastTargetVelocity,
-                finalTargetVelocity,
-                directionAlignDamping * Time.fixedDeltaTime).normalized;
-            
-            var lastTargetSpeed = TargetVelocity.magnitude;
-            var delta = wantToStop ? -deceleration : acceleration;
-            
-            var targetSpeed = lastTargetSpeed + delta * Time.deltaTime;
-            targetSpeed = Mathf.Clamp(targetSpeed, 0, maxSpeed);
-            
-            TargetVelocity = targetVelocity * targetSpeed;
-        }
-
-        private void ComputeDirection()
-        {
-            var direction = PlayerController.Instance.PlayerControls.GetMovementInput();
-            Direction = new Vector3(direction.x, currentGravity.y, direction.y).normalized;
-        }
-
-        private void ComputeGravity()
-        {
-            if (controller.isGrounded)
+            //rotate movement direction to match camera rotation
+            var adjustedDirection = Quaternion.AngleAxis(mainCam.eulerAngles.y, Vector3.up) * movementDirection;
+            if (adjustedDirection.magnitude > ZERO_F)
             {
-                currentGravity = -groundedGravity;
+                HandleRotation(adjustedDirection);
+
+                HandleCharacterController(adjustedDirection);
+
+                SmoothSpeed(adjustedDirection.magnitude);
             }
             else
             {
-                float previousVelocity = TargetVelocity.y;
-                float newYVelocity = TargetVelocity.y + (gravity.y * Time.deltaTime);
-                float nextYVelocity = (previousVelocity + newYVelocity) * .5f;
-                currentGravity.y = -nextYVelocity;
+                SmoothSpeed(ZERO_F);
             }
-        }
-        
-        private void ComputeJump()
-        {
-            if (!isJumping && controller.isGrounded && isJumpPressed)
-            {
-                isJumping = true;
-                var vector3 = CurrentVelocity;
-                vector3.y = jumpForce * .5f;
-                CurrentVelocity = vector3;
-            }
-            else if (isJumping && controller.isGrounded && !isJumpPressed)
-            {
-                isJumping = false;
-            }
-        }
-        private void ApplyJumpForce(InputAction.CallbackContext context)
-        {
             
+        }
+
+        private void HandleCharacterController(Vector3 adjustedDirection)
+        {
+            //Move the player
+            var adjustedMovement = adjustedDirection * (moveSpeed * Time.deltaTime);
+            controller.Move(adjustedMovement);
+        }
+
+        private void HandleRotation(Vector3 adjustedDirection)
+        {
+            //Adjust rotation to match movement
+            var targetRotation = Quaternion.LookRotation(adjustedDirection);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, RotationSpeed * Time.deltaTime);
+            transform.LookAt(transform.position + adjustedDirection);
+        }
+
+        private void SmoothSpeed(float adjustedDirection)
+        {
+            currentSpeed = Mathf.SmoothDamp(currentSpeed, adjustedDirection, ref velocity, smoothTime);
         }
     }
 }

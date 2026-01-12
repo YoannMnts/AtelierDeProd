@@ -18,12 +18,12 @@ namespace Ozkaal.Gameplay.Gameplay.Player
 
         private void OnEnable()
         {
-            PlayerController.Instance.PlayerControls.InteractInput.performed += Interact;
+            //PlayerController.Instance.PlayerControls.InteractInput.performed += Interact;
         }
 
         private void OnDisable()
         {
-            PlayerController.Instance.PlayerControls.InteractInput.performed -= Interact;
+            //PlayerController.Instance.PlayerControls.InteractInput.performed -= Interact;
         }
 
         private void Interact(InputAction.CallbackContext context)
