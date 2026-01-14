@@ -11,6 +11,7 @@ namespace Ozkaal.Gameplay.Gameplay.Player
     public class PlayerControls : ScriptableObject, IPlayerActions
     {
        public event Action<Vector2> Move = delegate { };
+       public event Action<bool> Jump = delegate { };
        
        PlayerInputAction inputActions;
        
@@ -26,9 +27,14 @@ namespace Ozkaal.Gameplay.Gameplay.Player
           inputActions.Enable();
        }
 
+       public void EnablePlayerActions()
+       {
+          inputActions.Enable();
+       }
+
        public void OnMove(InputAction.CallbackContext context)
         {
-           Move.Invoke(context.ReadValue<Vector2>());
+           Move?.Invoke(context.ReadValue<Vector2>());
         }
 
         public void OnInteract(InputAction.CallbackContext context)
@@ -43,7 +49,15 @@ namespace Ozkaal.Gameplay.Gameplay.Player
 
         public void OnJump(InputAction.CallbackContext context)
         {
-           //aaaaa
+           switch (context.phase)
+           {
+              case InputActionPhase.Started:
+                 Jump?.Invoke(true);
+                 break;
+              case InputActionPhase.Canceled:
+                 Jump?.Invoke(false);
+                 break;
+           }
         }
 
         public void OnCrouch(InputAction.CallbackContext context)
