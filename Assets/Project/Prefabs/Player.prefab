@@ -189,7 +189,7 @@ GameObject:
   - component: {fileID: 5616970116811454527}
   - component: {fileID: 8462979938337248365}
   m_Layer: 0
-  m_Name: Normal
+  m_Name: Default
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -233,6 +233,61 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &2980517177894431255
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7891033267728786055}
+  - component: {fileID: 2248928332417177028}
+  m_Layer: 0
+  m_Name: Crouch
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7891033267728786055
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2980517177894431255}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2560169849267927572}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &2248928332417177028
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2980517177894431255}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.5, z: 0}
 --- !u!1 &4016774068719304166
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,6 +318,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5616970116811454527}
+  - {fileID: 7891033267728786055}
   m_Father: {fileID: 4805874036565206574}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6663200578719741881
@@ -334,7 +390,6 @@ MonoBehaviour:
   rb: {fileID: 1818867071421849474}
   groundChecker: {fileID: 3119704049733065614}
   input: {fileID: 11400000, guid: cf8e9a967b161c044b5f5f3ce788542b, type: 2}
-  normalCollider: {fileID: 8462979938337248365}
   moveSpeed: 300
   rotationSpeed: 100
   smoothTime: 0.2
@@ -342,6 +397,8 @@ MonoBehaviour:
   jumpCooldown: 0
   jumpMaxHeight: 2
   gravityMultiplier: 3
+  defaultCollider: {fileID: 8462979938337248365}
+  crouchCollider: {fileID: 2248928332417177028}
 --- !u!114 &3119704049733065614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,7 +411,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edeb5f3834d947af92995180d8d0b894, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ozkaal.Gameplay.Gameplay.Player.GroundChecker
-  groundDistance: 0.5
+  groundDistance: 0.51
   groundLayer:
     serializedVersion: 2
     m_Bits: 8

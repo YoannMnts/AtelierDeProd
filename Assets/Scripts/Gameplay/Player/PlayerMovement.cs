@@ -187,11 +187,11 @@ namespace Ozkaal.Gameplay.Gameplay.Player
 
         private void FixedUpdate()
         {
-            // Handle vertical movement (jump & gravity)
-            HandleJump();
-
             // Handle horizontal movement & rotation
             HandleMovement();
+
+            // Handle vertical movement (jump & gravity)
+            HandleJump();
         }
 
 
