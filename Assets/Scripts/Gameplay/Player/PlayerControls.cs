@@ -11,6 +11,7 @@ namespace Ozkaal.Gameplay.Gameplay.Player
     {
        public event Action<Vector2> Move = delegate { };
        public event Action<bool> Jump = delegate { };
+       public event Action<bool> Crouch = delegate { };
        
        PlayerInputAction inputActions;
        
@@ -61,7 +62,15 @@ namespace Ozkaal.Gameplay.Gameplay.Player
 
         public void OnCrouch(InputAction.CallbackContext context)
         {
-           //aaaaa
+           switch (context.phase)
+           {
+              case InputActionPhase.Started:
+                 Crouch?.Invoke(true);
+                 break;
+              case InputActionPhase.Canceled:
+                 Crouch?.Invoke(false);
+                 break;
+           }
         }
     }
 }
