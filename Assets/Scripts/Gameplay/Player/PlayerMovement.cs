@@ -22,8 +22,6 @@ namespace Ozkaal.Gameplay.Gameplay.Player
         [SerializeField] private float smoothTime = 0.2f;
 
         [Header("Jump Settings")]
-        [SerializeField] private float launchPoint = .9f;
-        [SerializeField] private float jumpForce = 10f;
         [SerializeField] private float jumpDuration = 0.5f;
         [SerializeField] private float jumpCooldown = 0f;
         [SerializeField] private float jumpMaxHeight = 2f;
@@ -42,7 +40,7 @@ namespace Ozkaal.Gameplay.Gameplay.Player
         private CountdownTimer jumpTimer;
         private CountdownTimer jumpCountdownTimer;
 
-        //private Transform mainCam;
+        /*private Transform mainCam;*/
         
 
         private void Awake()
@@ -55,7 +53,7 @@ namespace Ozkaal.Gameplay.Gameplay.Player
             jumpCountdownTimer = new CountdownTimer(jumpCooldown);
             timers = new(2) { jumpTimer, jumpCountdownTimer };
 
-            //jumpTimer.OnTimerStop += () => jumpCountdownTimer.Start();   comprend pas
+            jumpTimer.OnTimerStop += () => jumpCountdownTimer.Start();
         }
 
         void Start() => input.EnablePlayerActions();
@@ -81,8 +79,10 @@ namespace Ozkaal.Gameplay.Gameplay.Player
         private void Update()
         {
             movement = new Vector3(input.Direction.x, 0, input.Direction.y);
-            //Debug.Log($"Jump Timer: {jumpTimer.IsFinished}");
-            //Debug.Log($"Jump Countdown: {jumpCountdownTimer.IsFinished}");
+            /*
+             Debug.Log($"Jump Timer: {jumpTimer.IsFinished}");
+            Debug.Log($"Jump Countdown: {jumpCountdownTimer.IsFinished}");
+            */
             HandleTimers();
             //UpdateAnimator();
         }
@@ -114,6 +114,11 @@ namespace Ozkaal.Gameplay.Gameplay.Player
             //if jumping or falling, calculate velocity
             if (jumpTimer.IsRunning)
             {
+                //calculate the velocity required to reach the jump height using physics equations v = sqrt(2gh)
+                var jumpApex = jumpMaxHeight / (2 * jumpDuration);
+                jumpVelocity = Mathf.Sqrt(2 * jumpApex * Mathf.Abs(Physics.gravity.y)) * (1- jumpTimer.Progress);
+                
+                
                 /*
                 //Progress point for initial burst of velocity
                 if (jumpTimer.Progress > launchPoint)
@@ -126,7 +131,6 @@ namespace Ozkaal.Gameplay.Gameplay.Player
                     //gradually apply less velocity as the jump progresses
                     jumpVelocity += (1- jumpTimer.Progress) * jumpForce * Time.fixedDeltaTime;
                 }*/
-                jumpVelocity = Mathf.Sqrt(2 * jumpMaxHeight * Mathf.Abs(Physics.gravity.y)) * (1- jumpTimer.Progress);
             }
             else
             {

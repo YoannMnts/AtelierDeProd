@@ -6,7 +6,6 @@ using static PlayerInputAction;
 
 namespace Ozkaal.Gameplay.Gameplay.Player
 {
-    [DefaultExecutionOrder(-10)]
     [CreateAssetMenu(fileName = "PlayerControls", menuName = "Player/Controls")]
     public class PlayerControls : ScriptableObject, IPlayerActions
     {
