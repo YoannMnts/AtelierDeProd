@@ -2,6 +2,7 @@
 using Ozkaal.Gameplay.Gameplay.Player;
 using Ozkaal.Gameplay.Gameplay.UI;
 using UnityEngine;
+using Random = System.Random;
 
 namespace Ozkaal.Gameplay.Gameplay.Interaction.Symbols
 {

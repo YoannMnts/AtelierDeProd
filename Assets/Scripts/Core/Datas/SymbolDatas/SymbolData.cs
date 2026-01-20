@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Ozkaal.Core.Core.Datas.SymbolDatas
 {
-    [CreateAssetMenu(fileName = "SymbolData", menuName = "Interactable/SymbolData", order = 0)]
+    [CreateAssetMenu(fileName = "SymbolData", menuName = "Datas/SymbolData", order = 0)]
     public class SymbolData : ScriptableObject
     {
         [field : SerializeField]
