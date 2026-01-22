@@ -39,7 +39,10 @@ namespace Ozkaal.Gameplay.Gameplay.Player
 
         public void OnInteract(InputAction.CallbackContext context)
         {
-           //aaaaa
+           if (context.performed)
+           {
+              PlayerController.Instance.PlayerInteraction.Interact();
+           }
         }
 
         public void OnCodex(InputAction.CallbackContext context)

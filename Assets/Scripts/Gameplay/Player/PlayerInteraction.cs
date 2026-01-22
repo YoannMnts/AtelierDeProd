@@ -16,17 +16,7 @@ namespace Ozkaal.Gameplay.Gameplay.Player
         [Header("Interact")]
         [SerializeField] private float interactRange;
 
-        private void OnEnable()
-        {
-            //PlayerController.Instance.PlayerControls.InteractInput.performed += Interact;
-        }
-
-        private void OnDisable()
-        {
-            //PlayerController.Instance.PlayerControls.InteractInput.performed -= Interact;
-        }
-
-        private void Interact(InputAction.CallbackContext context)
+        public void Interact()
         {
             Collider[] colliders = Physics.OverlapSphere(transform.position, interactRange);
             foreach (var collider in colliders)

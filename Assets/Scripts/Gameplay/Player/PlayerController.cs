@@ -17,6 +17,8 @@ namespace Ozkaal.Gameplay.Gameplay.Player
         public PlayerCamera PlayerCamera { get; private set; }
         [field : SerializeField]
         public PlayerControls PlayerControls { get; private set; }
+        [field : SerializeField]
+        public PlayerInteraction PlayerInteraction { get; private set; }
         public Codex Codex { get; private set; }
     
         public IPlayerComponent[] PlayerComponents { get; private set; }
