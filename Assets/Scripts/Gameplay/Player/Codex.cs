@@ -51,18 +51,5 @@ namespace Ozkaal.Gameplay.Gameplay.Player
             }
             return false;
         }
-
-        public void ConnectToUI(InputAction.CallbackContext context)
-        {
-            temp = !temp;
-            if (temp)
-            {
-                UIManager.instance.CodexUI.Connect(this, symbols);
-            }
-            else
-            {
-                UIManager.instance.CodexUI.Disconnect(this);
-            }
-        }
     }
 }

@@ -30,7 +30,7 @@ namespace Gameplay.Creature
         
         public void Talk()
         {
-            List<WorldCreatureSymbolGroup> validCreatureSymbolGroups = ListPool<WorldCreatureSymbolGroup>.Get();
+            List<CreatureSymbolGroupData> validCreatureSymbolGroupDatas = ListPool<CreatureSymbolGroupData>.Get();
             try
             {
                 for (int i = 0; i < creatureSymbolGroupDatas.Length; i++)
@@ -38,24 +38,28 @@ namespace Gameplay.Creature
                     int min = creatureSymbolGroupDatas[i].MinFriendshipAmount;
                     int max = creatureSymbolGroupDatas[i].MaxFriendshipAmount;
                     
-                    if (currentFriendshipAmount > min && currentFriendshipAmount < max)
+                    if (currentFriendshipAmount >= min && currentFriendshipAmount <= max)
                     {
-                        WorldCreatureSymbolGroup validCreatureSymbolGroup = new(creatureSymbolGroupDatas[i]);
-                        validCreatureSymbolGroups.Add(validCreatureSymbolGroup);
+                        validCreatureSymbolGroupDatas.Add(creatureSymbolGroupDatas[i]);
                     }
                 }
-
+                
                 for (int i = 0; i < numberOfSentence; i++)
                 {
-                    int randomIndex = Random.Range(0, validCreatureSymbolGroups.Count);
-                    Debug.Log($"I talk : {validCreatureSymbolGroups[randomIndex]}");
+                    int randomIndex = Random.Range(0, validCreatureSymbolGroupDatas.Count);
+                    Debug.Log($"Answer {randomIndex}, Number of symbol: {validCreatureSymbolGroupDatas[randomIndex].SymbolDatas.Length}");
+                    for (int j = 0; j < validCreatureSymbolGroupDatas[randomIndex].SymbolDatas.Length; j++)
+                    {
+                        Debug.Log($"{validCreatureSymbolGroupDatas[randomIndex].SymbolDatas[j].name}");
+                    }
                     //instantiate the sentence
                 }
                 OnTalk?.Invoke();
             }
             finally
             {
-                ListPool<WorldCreatureSymbolGroup>.Release(validCreatureSymbolGroups);
+                Debug.Log("OnTalk finished");
+                ListPool<CreatureSymbolGroupData>.Release(validCreatureSymbolGroupDatas);
             }
         }
 

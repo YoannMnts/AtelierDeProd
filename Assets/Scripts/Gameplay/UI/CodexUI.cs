@@ -17,9 +17,21 @@ namespace Ozkaal.Gameplay.Gameplay.UI
         private Transform root;
         [SerializeField]
         private CanvasGroup canvasGroup;
-        
-        public Codex CurrentCodex { get; private set; }
-        
+
+        private Codex currentCodex;
+
+        private void OnEnable()
+        {
+            PlayerController.Instance.PlayerControls.OpenCodex += Connect;
+            PlayerController.Instance.PlayerControls.CloseCodex += Disconnect;
+        }
+
+        private void OnDisable()
+        {
+            PlayerController.Instance.PlayerControls.OpenCodex -= Connect;
+            PlayerController.Instance.PlayerControls.CloseCodex -= Disconnect;
+        }
+
         private void Start()
         {
             foreach (Transform t in root)
@@ -27,20 +39,22 @@ namespace Ozkaal.Gameplay.Gameplay.UI
                 Destroy(t.gameObject);
             }
         }
-        public void Connect(Codex codex,Dictionary<string, CodexSymbol> symbols)
+        public void Connect(Codex codex)
         {
-            if (CurrentCodex != null)
+            Debug.Log($"Connecting to {codex}");
+            if (currentCodex != null)
             {
-                Disconnect(CurrentCodex);
+                Disconnect(currentCodex);
             }
-            CurrentCodex = codex;
-            foreach ((string guid, CodexSymbol codexSymbol) in symbols)
+            currentCodex = codex;
+            var entries = Resources.LoadAll<SymbolData>("ScriptableObject/CodexEntries");
+            for (int i = 0; i < entries.Length; i++)
             {
-                if (!CurrentCodex.IsSymbolDiscovered(guid))
-                {
+                string guid = entries[i].SymbolID;
+                if (!currentCodex.IsSymbolDiscovered(guid))
                     continue;
-                }
                 SymbolUI instance = Instantiate(prefab, root);
+                currentCodex.TryGetCodexSymbol(guid, out CodexSymbol codexSymbol);
                 instance.Connect(codexSymbol);
             }
             canvasGroup.alpha = 1;
@@ -50,7 +64,7 @@ namespace Ozkaal.Gameplay.Gameplay.UI
 
         public void Disconnect(Codex codex)
         {
-            if (CurrentCodex != codex)
+            if (currentCodex != codex)
             {
                 return;
             }

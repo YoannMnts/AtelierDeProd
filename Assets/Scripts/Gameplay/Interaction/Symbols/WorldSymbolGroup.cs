@@ -11,6 +11,10 @@ namespace Ozkaal.Gameplay.Gameplay.Interaction.Symbols
         public WorldSymbol[] Symbols {get; private set;}
 
         private bool temp;
+        private void Start()
+        {
+            Symbols = GetComponentsInChildren<WorldSymbol>();
+        }
         public void Interact(PlayerInteraction playerInteraction)
         {
             temp = !temp;
@@ -30,9 +34,5 @@ namespace Ozkaal.Gameplay.Gameplay.Interaction.Symbols
             }
         }
 
-        private void Start()
-        {
-            Symbols = GetComponentsInChildren<WorldSymbol>();
-        }
     }
 }

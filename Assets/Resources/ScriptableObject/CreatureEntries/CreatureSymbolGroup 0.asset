@@ -10,9 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 89b5e21ba23d46d0a27721caadc00db3, type: 3}
-  m_Name: CreatureSymbolGroup
+  m_Name: CreatureSymbolGroup 0
   m_EditorClassIdentifier: Ozkaal.Core::Gameplay.Creature.CreatureSymbolGroupData
-  <SymbolDatas>k__BackingField: []
+  <SymbolDatas>k__BackingField:
+  - {fileID: 11400000, guid: 0f2aa8e65dd0ffc49beade731fdb54ae, type: 2}
+  - {fileID: 11400000, guid: 4018d4f594d8eeb48a94d8b98faca742, type: 2}
+  - {fileID: 11400000, guid: efeb02291fcc1264298ca910322d09bd, type: 2}
   <MinFriendshipAmount>k__BackingField: 0
   <MaxFriendshipAmount>k__BackingField: 0
   <GainOrLossAmount>k__BackingField: 0

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Gameplay.Creature;
+using UnityEngine;
 
 namespace Ozkaal.Gameplay.Gameplay.UI
 {
@@ -10,6 +11,9 @@ namespace Ozkaal.Gameplay.Gameplay.UI
         
         [field: SerializeField]
         public SymbolGroupUI SymbolGroupUI { get; private set; }
+        
+        [field: SerializeField]
+        public CreatureSymbolGroupsUI CreatureSymbolGroupsUI { get; private set; }
         
         [field: SerializeField]
         public CodexUI CodexUI { get; private set; }
