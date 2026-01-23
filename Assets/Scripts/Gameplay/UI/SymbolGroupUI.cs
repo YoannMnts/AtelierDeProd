@@ -9,7 +9,6 @@ namespace Ozkaal.Gameplay.Gameplay.UI
 {
     public class SymbolGroupUI : MonoBehaviour
     {
-
         public static SymbolGroupUI Main => UIManager.instance.SymbolGroupUI;
         
         public Codex CurrentCodex { get; private set; }
@@ -57,6 +56,7 @@ namespace Ozkaal.Gameplay.Gameplay.UI
                 }
             }
         }
+        
         
         public void Disconnect(Codex codex, WorldSymbolGroup group)
         {

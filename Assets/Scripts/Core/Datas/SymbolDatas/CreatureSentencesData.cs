@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Gameplay.Creature
 {
     [CreateAssetMenu(fileName = "CreatureSymbolGroup", menuName = "Datas/Creature/SymbolGroup", order = 0)]
-    public class CreatureSymbolGroupData : ScriptableObject
+    public class CreatureSentencesData : ScriptableObject
     {
         [field: SerializeField]
         public SymbolData[] SymbolDatas {get; private set;}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ozkaal.Gameplay.Gameplay.UI;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.Serialization;
@@ -9,57 +10,56 @@ namespace Gameplay.Creature
 {
     public class Creature
     {
-        public Creature(int NumberOfSentence, Transform SentencesRoot)
+        public Creature(int sentencesNumber)
         {
-            creatureSymbolGroupDatas = Resources.LoadAll<CreatureSymbolGroupData>("ScriptableObject/CreatureEntries");
-            numberOfSentence = NumberOfSentence;
-            sentencesRoot = SentencesRoot;
+            this.numberOfSentence = sentencesNumber;
         }
-        
         public event Action OnGainFriendship;
         public event Action OnLossFriendship;
-        public event Action OnTalk;
+        public event Action<List<CreatureSentencesData>> OnTalk;
         
-        private readonly CreatureSymbolGroupData[] creatureSymbolGroupDatas;
+        private readonly CreatureSentencesData[] creatureSentencesDatas = Resources.LoadAll<CreatureSentencesData>("ScriptableObject/CreatureEntries");
         
         private readonly int numberOfSentence;
         
-        private readonly Transform sentencesRoot;
-        
         private int currentFriendshipAmount;
+        
+        private List<CreatureSentencesData> currentCreatureSentences = new();
         
         public void Talk()
         {
-            List<CreatureSymbolGroupData> validCreatureSymbolGroupDatas = ListPool<CreatureSymbolGroupData>.Get();
+            List<CreatureSentencesData> validCreatureSentencesDatas = ListPool<CreatureSentencesData>.Get();
             try
             {
-                for (int i = 0; i < creatureSymbolGroupDatas.Length; i++)
+                for (int i = 0; i < creatureSentencesDatas.Length; i++)
                 {
-                    int min = creatureSymbolGroupDatas[i].MinFriendshipAmount;
-                    int max = creatureSymbolGroupDatas[i].MaxFriendshipAmount;
+                    int min = creatureSentencesDatas[i].MinFriendshipAmount;
+                    int max = creatureSentencesDatas[i].MaxFriendshipAmount;
                     
                     if (currentFriendshipAmount >= min && currentFriendshipAmount <= max)
                     {
-                        validCreatureSymbolGroupDatas.Add(creatureSymbolGroupDatas[i]);
+                        validCreatureSentencesDatas.Add(creatureSentencesDatas[i]);
                     }
                 }
                 
                 for (int i = 0; i < numberOfSentence; i++)
                 {
-                    int randomIndex = Random.Range(0, validCreatureSymbolGroupDatas.Count);
-                    Debug.Log($"Answer {randomIndex}, Number of symbol: {validCreatureSymbolGroupDatas[randomIndex].SymbolDatas.Length}");
-                    for (int j = 0; j < validCreatureSymbolGroupDatas[randomIndex].SymbolDatas.Length; j++)
+                    int randomIndex = Random.Range(0, validCreatureSentencesDatas.Count);
+                    currentCreatureSentences.Add(validCreatureSentencesDatas[randomIndex]);
+                    
+                    //Debug pour la demo
+                    Debug.Log($"Answer {randomIndex}, Number of symbol: {validCreatureSentencesDatas[randomIndex].SymbolDatas.Length}");
+                    for (int j = 0; j < validCreatureSentencesDatas[randomIndex].SymbolDatas.Length; j++)
                     {
-                        Debug.Log($"{validCreatureSymbolGroupDatas[randomIndex].SymbolDatas[j].name}");
+                        Debug.Log($"{validCreatureSentencesDatas[randomIndex].SymbolDatas[j].name}");
                     }
-                    //instantiate the sentence
                 }
-                OnTalk?.Invoke();
+                OnTalk?.Invoke(currentCreatureSentences);
             }
             finally
             {
                 Debug.Log("OnTalk finished");
-                ListPool<CreatureSymbolGroupData>.Release(validCreatureSymbolGroupDatas);
+                ListPool<CreatureSentencesData>.Release(validCreatureSentencesDatas);
             }
         }
 
