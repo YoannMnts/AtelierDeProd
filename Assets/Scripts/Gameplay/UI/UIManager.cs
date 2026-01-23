@@ -13,7 +13,7 @@ namespace Ozkaal.Gameplay.Gameplay.UI
         public SymbolGroupUI SymbolGroupUI { get; private set; }
         
         [field: SerializeField]
-        public CreatureSymbolGroupsUI CreatureSymbolGroupsUI { get; private set; }
+        public CreatureUI CreatureUI { get; private set; }
         
         [field: SerializeField]
         public CodexUI CodexUI { get; private set; }

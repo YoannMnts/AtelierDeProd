@@ -375,6 +375,7 @@ MonoBehaviour:
   <PlayerMovement>k__BackingField: {fileID: 316868853873685576}
   <PlayerCamera>k__BackingField: {fileID: 0}
   <PlayerControls>k__BackingField: {fileID: 11400000, guid: cf8e9a967b161c044b5f5f3ce788542b, type: 2}
+  <PlayerInteraction>k__BackingField: {fileID: 2724666993807427712}
 --- !u!114 &316868853873685576
 MonoBehaviour:
   m_ObjectHideFlags: 0

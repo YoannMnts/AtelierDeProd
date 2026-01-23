@@ -1,7 +1,7 @@
 ﻿
 namespace Gameplay.Creature
 {
-    public class CreatureSymbolGroupsUI
+    public class CreatureUI
     {
         
     }
