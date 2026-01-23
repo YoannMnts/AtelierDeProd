@@ -1,5 +1,5 @@
 ﻿using System;
-using Ozkaal.Core.Core.Datas.SymbolDatas;
+using Ozkaal.Core.Datas.SymbolDatas;
 using UnityEngine;
 
 namespace Ozkaal.Gameplay.Gameplay.Player

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ozkaal.Core.Datas.SymbolDatas;
 using Ozkaal.Gameplay.Gameplay.UI;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -9,67 +10,78 @@ using Random = UnityEngine.Random;
 namespace Gameplay.Creature
 {
     public class Creature
-    {
-        public Creature(int sentencesNumber)
+    { 
+        public Creature(int answerNumber)
         {
-            this.numberOfSentence = sentencesNumber;
+            this.numberOfAnswer = answerNumber;
         }
-        public event Action OnGainFriendship;
-        public event Action OnLossFriendship;
-        public event Action<List<CreatureSentencesData>> OnTalk;
         
-        private readonly CreatureSentencesData[] creatureSentencesDatas = Resources.LoadAll<CreatureSentencesData>("ScriptableObject/CreatureEntries");
+        public readonly List<CreatureAnswerData> currentCreatureAnswers = new();
         
-        private readonly int numberOfSentence;
+        public event Action<Creature> OnGainFriendship;
+        public event Action<Creature> OnLossFriendship;
+        public event Action<Creature> OnTalk;
+        public event Action<Creature> OnStopTalk;
+        
+        
+        public bool IsAlreadyTalking {get; private set;}
+        
+        
+        private readonly CreatureAnswerData[] creatureAnswerDatas = Resources.LoadAll<CreatureAnswerData>("ScriptableObject/CreatureEntries");
+        
+        private readonly int numberOfAnswer;
+        
         
         private int currentFriendshipAmount;
         
-        private List<CreatureSentencesData> currentCreatureSentences = new();
         
         public void Talk()
         {
-            List<CreatureSentencesData> validCreatureSentencesDatas = ListPool<CreatureSentencesData>.Get();
-            try
+            using (ListPool<CreatureAnswerData>.Get(out var validCreatureAnswerDatas))
             {
-                for (int i = 0; i < creatureSentencesDatas.Length; i++)
+                for (int i = 0; i < creatureAnswerDatas.Length; i++)
                 {
-                    int min = creatureSentencesDatas[i].MinFriendshipAmount;
-                    int max = creatureSentencesDatas[i].MaxFriendshipAmount;
+                    int min = creatureAnswerDatas[i].MinFriendshipAmount;
+                    int max = creatureAnswerDatas[i].MaxFriendshipAmount;
                     
                     if (currentFriendshipAmount >= min && currentFriendshipAmount <= max)
                     {
-                        validCreatureSentencesDatas.Add(creatureSentencesDatas[i]);
+                        validCreatureAnswerDatas.Add(creatureAnswerDatas[i]);
                     }
                 }
                 
-                for (int i = 0; i < numberOfSentence; i++)
+                int maxCount = Mathf.Min(numberOfAnswer, validCreatureAnswerDatas.Count);
+                for (int i = 0; i < maxCount; i++)
                 {
-                    int randomIndex = Random.Range(0, validCreatureSentencesDatas.Count);
-                    currentCreatureSentences.Add(validCreatureSentencesDatas[randomIndex]);
+                    int randomIndex = Random.Range(0, validCreatureAnswerDatas.Count);
+                    currentCreatureAnswers.Add(validCreatureAnswerDatas[randomIndex]);
                     
                     //Debug pour la demo
-                    Debug.Log($"Answer {randomIndex}, Number of symbol: {validCreatureSentencesDatas[randomIndex].SymbolDatas.Length}");
-                    for (int j = 0; j < validCreatureSentencesDatas[randomIndex].SymbolDatas.Length; j++)
+                    Debug.Log($"Answer {randomIndex}, Number of symbol: {validCreatureAnswerDatas[randomIndex].SymbolDatas.Length}");
+                    for (int j = 0; j < validCreatureAnswerDatas[randomIndex].SymbolDatas.Length; j++)
                     {
-                        Debug.Log($"{validCreatureSentencesDatas[randomIndex].SymbolDatas[j].name}");
+                        Debug.Log($"{validCreatureAnswerDatas[randomIndex].SymbolDatas[j].name}");
                     }
                 }
-                OnTalk?.Invoke(currentCreatureSentences);
-            }
-            finally
-            {
+                IsAlreadyTalking = true;
+                OnTalk?.Invoke(this);
                 Debug.Log("OnTalk finished");
-                ListPool<CreatureSentencesData>.Release(validCreatureSentencesDatas);
             }
+        }
+
+        public void StopTalking()
+        {
+            IsAlreadyTalking = false;
+            OnStopTalk?.Invoke(this);
         }
 
         public void AddOrRemoveFriendship(int amount)
         {
             currentFriendshipAmount += amount;
             if (amount > 0)
-                OnGainFriendship?.Invoke();
+                OnGainFriendship?.Invoke(this);
             else
-                OnLossFriendship?.Invoke();
+                OnLossFriendship?.Invoke(this);
         }
     }
 }

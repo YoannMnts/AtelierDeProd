@@ -1,10 +1,9 @@
-﻿using Ozkaal.Core.Core.Datas.SymbolDatas;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Gameplay.Creature
+namespace Ozkaal.Core.Datas.SymbolDatas
 {
     [CreateAssetMenu(fileName = "CreatureSymbolGroup", menuName = "Datas/Creature/SymbolGroup", order = 0)]
-    public class CreatureSentencesData : ScriptableObject
+    public class CreatureAnswerData : ScriptableObject
     {
         [field: SerializeField]
         public SymbolData[] SymbolDatas {get; private set;}

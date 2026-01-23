@@ -1,7 +1,8 @@
 ﻿using System;
+using UnityEditor;
 using UnityEngine;
 
-namespace Ozkaal.Core.Core.Datas.SymbolDatas
+namespace Ozkaal.Core.Datas.SymbolDatas
 {
     [CreateAssetMenu(fileName = "SymbolData", menuName = "Datas/SymbolData", order = 0)]
     public class SymbolData : ScriptableObject
@@ -10,14 +11,31 @@ namespace Ozkaal.Core.Core.Datas.SymbolDatas
         public GameObject Prefab { get; private set; }
         [field : SerializeField]
         public Sprite Icon { get; private set; }
+        
+        [field: SerializeField]
         public string SymbolID { get; private set; }
 
         private void OnValidate()
         {
             if (string.IsNullOrEmpty(SymbolID))
             {
-                SymbolID = Guid.NewGuid().ToString();
+                GenerateNewGuid();
             }
+#if UNITY_EDITOR
+             string[] existings = AssetDatabase.FindAssets($"t:{nameof(SymbolData)}");
+             for (int i = 0; i < existings.Length; i++)
+             {
+                 var path = AssetDatabase.GUIDToAssetPath(existings[i]);
+                 var asset = AssetDatabase.LoadAssetAtPath<SymbolData>(path);
+                 if(asset != this && asset.SymbolID == SymbolID)
+                     GenerateNewGuid();
+             }
+#endif
+        }
+
+        private void GenerateNewGuid()
+        {
+            SymbolID = Guid.NewGuid().ToString();
         }
     }
 }
