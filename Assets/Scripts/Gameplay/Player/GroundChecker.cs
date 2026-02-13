@@ -9,10 +9,13 @@ namespace Ozkaal.Gameplay.Gameplay.Player
         [SerializeField] private LayerMask groundLayer;
         
         public bool IsGrounded { get; private set; }
+        public Vector3 GroundNormal { get; private set; }
 
         private void Update()
         {
-            IsGrounded = Physics.SphereCast(transform.position, groundDistance, Vector3.down, out _, groundDistance,groundLayer);
+            Physics.SphereCast(transform.position, groundDistance, Vector3.down, out RaycastHit hit, groundDistance,groundLayer);
+            IsGrounded = hit.normal.y >= 0.75f;
+            GroundNormal = hit.normal;
         }
     }
 }

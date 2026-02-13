@@ -55,7 +55,7 @@ namespace Ozkaal.Gameplay.Gameplay.Player
         [SerializeField] private float jumpMaxHeight = 2f;
 
         [Tooltip("Multiplier applied to gravity when the player is falling.")]
-        [SerializeField] private float gravityMultiplier = 3f;
+        [SerializeField] private float gravityMultiplier = 1f;
 
         
         /* ───────────────────────── Colliders ───────────────────────── */
@@ -81,6 +81,8 @@ namespace Ozkaal.Gameplay.Gameplay.Player
 
         // Vertical velocity applied to the Rigidbody for jumping/falling
         private float jumpVelocity;
+        
+        private float currentGravity;
 
         // Raw movement direction from input
         private Vector3 movement;
@@ -151,6 +153,11 @@ namespace Ozkaal.Gameplay.Gameplay.Player
             if (performed && !jumpTimer.IsRunning && !jumpCountdownTimer.IsRunning && groundChecker.IsGrounded)
             {
                 jumpTimer.Start();
+                float jumpGravity = (8f * jumpMaxHeight) / (jumpDuration * jumpDuration);
+                float initialVelocity = (4f * jumpMaxHeight) / jumpDuration;
+
+                currentGravity = -jumpGravity; // on stocke
+                jumpVelocity = initialVelocity;
             }
             // Optional early jump cancel
             else if (!performed && jumpTimer.IsRunning)
@@ -225,21 +232,19 @@ namespace Ozkaal.Gameplay.Gameplay.Player
                 jumpTimer.Stop();
                 return;
             }
-
+            
             // While jump timer is running, calculate upward velocity
             if (jumpTimer.IsRunning)
             {
-                // Physics-based jump velocity with progressive reduction and using physics equations v = sqrt(2gh)
-                jumpVelocity =
-                    Mathf.Sqrt(2f * jumpMaxHeight * Mathf.Abs(Physics.gravity.y))
-                    * (1f - jumpTimer.Progress);
+                jumpVelocity += currentGravity * Time.fixedDeltaTime;
             }
             else
             {
                 // Apply gravity when not actively jumping
-                jumpVelocity += Physics.gravity.y * gravityMultiplier * Time.fixedDeltaTime;
+                jumpVelocity += currentGravity * gravityMultiplier * Time.fixedDeltaTime;
             }
-
+            
+            
             // Apply final vertical velocity to Rigidbody
             rb.linearVelocity = new Vector3(
                 rb.linearVelocity.x,
@@ -253,7 +258,7 @@ namespace Ozkaal.Gameplay.Gameplay.Player
 
         private void HandleMovement()
         {
-            var adjustedDirection = movement;
+            Vector3 adjustedDirection = movement;
 
             if (adjustedDirection.magnitude > ZERO_F)
             {
