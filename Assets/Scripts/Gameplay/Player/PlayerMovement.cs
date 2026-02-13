@@ -22,6 +22,10 @@ namespace Ozkaal.Gameplay.Gameplay.Player
         [Tooltip("Input wrapper that provides input.")]
         [SerializeField] private PlayerControls input;
 
+        // A ENLEVER ASBOLUMENT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        [SerializeField] private Material crouchMaterial;
+        [SerializeField] private Material defaultMaterial;
+        [SerializeField] private MeshRenderer crouchRenderer;
 
         /* ───────────────────────── MOVEMENT SETTINGS ───────────────────────── */
 
@@ -151,7 +155,7 @@ namespace Ozkaal.Gameplay.Gameplay.Player
             // Optional early jump cancel
             else if (!performed && jumpTimer.IsRunning)
             {
-                // jumpTimer.Stop();
+                jumpTimer.Stop();
             }
         }
 
@@ -160,10 +164,13 @@ namespace Ozkaal.Gameplay.Gameplay.Player
             if (wantToCrouch && groundChecker.IsGrounded)
             {
                 ActivateColliders(crouchCollider);
+                crouchRenderer.material = crouchMaterial;
+                
             }
             else if (!wantToCrouch || !groundChecker.IsGrounded)
             {
                 ActivateColliders(defaultCollider);
+                crouchRenderer.material = defaultMaterial;
             }
         }
 

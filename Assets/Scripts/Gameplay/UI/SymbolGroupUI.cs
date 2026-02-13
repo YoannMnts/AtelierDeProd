@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Gameplay.Creature;
-using Ozkaal.Core.Core.Datas.SymbolDatas;
+using Ozkaal.Core.Datas.SymbolDatas;
 using Ozkaal.Gameplay.Gameplay.Interaction.Symbols;
 using Ozkaal.Gameplay.Gameplay.Player;
 using UnityEngine;
@@ -9,7 +9,6 @@ namespace Ozkaal.Gameplay.Gameplay.UI
 {
     public class SymbolGroupUI : MonoBehaviour
     {
-
         public static SymbolGroupUI Main => UIManager.instance.SymbolGroupUI;
         
         public Codex CurrentCodex { get; private set; }
@@ -57,6 +56,7 @@ namespace Ozkaal.Gameplay.Gameplay.UI
                 }
             }
         }
+        
         
         public void Disconnect(Codex codex, WorldSymbolGroup group)
         {

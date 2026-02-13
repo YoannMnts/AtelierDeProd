@@ -1,5 +1,4 @@
 ﻿using System;
-using Ozkaal.Core.Core.Datas.SymbolDatas;
 using Ozkaal.Gameplay.Gameplay.Player;
 using TMPro;
 using UnityEngine;

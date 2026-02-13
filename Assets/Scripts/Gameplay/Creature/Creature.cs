@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ozkaal.Core.Datas.CreatureQuestionDatas;
+using Ozkaal.Core.Datas.SymbolDatas;
+using Ozkaal.Gameplay.Gameplay.Player;
+using Ozkaal.Gameplay.Gameplay.UI;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.Serialization;
@@ -8,68 +12,74 @@ using Random = UnityEngine.Random;
 namespace Gameplay.Creature
 {
     public class Creature
-    {
-        public Creature(int NumberOfSentence, Transform SentencesRoot)
+    { 
+        public Creature(int answerNumber)
         {
-            creatureSymbolGroupDatas = Resources.LoadAll<CreatureSymbolGroupData>("ScriptableObject/CreatureEntries");
-            numberOfSentence = NumberOfSentence;
-            sentencesRoot = SentencesRoot;
+            this.numberOfAnswer = answerNumber;
         }
+
+        public CreatureQuestionData CurrentCreatureQuestion { get; private set; }
         
-        public event Action OnGainFriendship;
-        public event Action OnLossFriendship;
-        public event Action OnTalk;
+        public event Action<Creature> OnGainFriendship;
+        public event Action<Creature> OnLossFriendship;
+        public event Action<Creature, Codex> OnTalk;
+        public event Action<Creature, Codex> OnStopTalk;
         
-        private readonly CreatureSymbolGroupData[] creatureSymbolGroupDatas;
         
-        private readonly int numberOfSentence;
+        public bool IsAlreadyTalking {get; private set;}
         
-        private readonly Transform sentencesRoot;
+        
+        private readonly CreatureQuestionData[] creatureQuestionDatas = Resources.LoadAll<CreatureQuestionData>("ScriptableObject/CreatureEntries");
+        
+        private readonly int numberOfAnswer;
         
         private int currentFriendshipAmount;
         
-        public void Talk()
+        private Codex currentCodex;
+        
+        
+        public void Talk(Codex codex)
         {
-            List<CreatureSymbolGroupData> validCreatureSymbolGroupDatas = ListPool<CreatureSymbolGroupData>.Get();
-            try
+            if (IsAlreadyTalking)
             {
-                for (int i = 0; i < creatureSymbolGroupDatas.Length; i++)
+                StopTalking();
+                return;
+            }
+            currentCodex = codex;
+            using (ListPool<CreatureQuestionData>.Get(out var validCreatureQuestionDatas))
+            {
+                for (int i = 0; i < creatureQuestionDatas.Length; i++)
                 {
-                    int min = creatureSymbolGroupDatas[i].MinFriendshipAmount;
-                    int max = creatureSymbolGroupDatas[i].MaxFriendshipAmount;
+                    int min = creatureQuestionDatas[i].MinFriendshipAmount;
+                    int max = creatureQuestionDatas[i].MaxFriendshipAmount;
                     
                     if (currentFriendshipAmount >= min && currentFriendshipAmount <= max)
                     {
-                        validCreatureSymbolGroupDatas.Add(creatureSymbolGroupDatas[i]);
+                        validCreatureQuestionDatas.Add(creatureQuestionDatas[i]);
                     }
                 }
+                int randomIndex = Random.Range(0, validCreatureQuestionDatas.Count);
+                CurrentCreatureQuestion = validCreatureQuestionDatas[randomIndex];
                 
-                for (int i = 0; i < numberOfSentence; i++)
-                {
-                    int randomIndex = Random.Range(0, validCreatureSymbolGroupDatas.Count);
-                    Debug.Log($"Answer {randomIndex}, Number of symbol: {validCreatureSymbolGroupDatas[randomIndex].SymbolDatas.Length}");
-                    for (int j = 0; j < validCreatureSymbolGroupDatas[randomIndex].SymbolDatas.Length; j++)
-                    {
-                        Debug.Log($"{validCreatureSymbolGroupDatas[randomIndex].SymbolDatas[j].name}");
-                    }
-                    //instantiate the sentence
-                }
-                OnTalk?.Invoke();
-            }
-            finally
-            {
+                IsAlreadyTalking = true;
+                OnTalk?.Invoke(this, currentCodex);
                 Debug.Log("OnTalk finished");
-                ListPool<CreatureSymbolGroupData>.Release(validCreatureSymbolGroupDatas);
             }
+        }
+
+        public void StopTalking()
+        {
+            IsAlreadyTalking = false;
+            OnStopTalk?.Invoke(this, currentCodex);
         }
 
         public void AddOrRemoveFriendship(int amount)
         {
             currentFriendshipAmount += amount;
             if (amount > 0)
-                OnGainFriendship?.Invoke();
+                OnGainFriendship?.Invoke(this);
             else
-                OnLossFriendship?.Invoke();
+                OnLossFriendship?.Invoke(this);
         }
     }
 }

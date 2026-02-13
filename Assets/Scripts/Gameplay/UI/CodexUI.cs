@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Ozkaal.Core.Core.Datas.SymbolDatas;
+using Ozkaal.Core.Datas.SymbolDatas;
 using Ozkaal.Gameplay.Gameplay.Player;
 using UnityEngine;
 using UnityEngine.Pool;

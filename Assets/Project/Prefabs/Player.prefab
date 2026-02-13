@@ -375,6 +375,7 @@ MonoBehaviour:
   <PlayerMovement>k__BackingField: {fileID: 316868853873685576}
   <PlayerCamera>k__BackingField: {fileID: 0}
   <PlayerControls>k__BackingField: {fileID: 11400000, guid: cf8e9a967b161c044b5f5f3ce788542b, type: 2}
+  <PlayerInteraction>k__BackingField: {fileID: 2724666993807427712}
 --- !u!114 &316868853873685576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -390,12 +391,15 @@ MonoBehaviour:
   rb: {fileID: 1818867071421849474}
   groundChecker: {fileID: 3119704049733065614}
   input: {fileID: 11400000, guid: cf8e9a967b161c044b5f5f3ce788542b, type: 2}
+  crouchMaterial: {fileID: 2100000, guid: d5f6e23165318834fb79a74372aa96e6, type: 2}
+  defaultMaterial: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  crouchRenderer: {fileID: 63014975814842594}
   moveSpeed: 300
   rotationSpeed: 100
   smoothTime: 0.2
   jumpDuration: 0.5
   jumpCooldown: 0
-  jumpMaxHeight: 2
+  jumpMaxHeight: 4
   gravityMultiplier: 3
   defaultCollider: {fileID: 8462979938337248365}
   crouchCollider: {fileID: 2248928332417177028}

@@ -8,6 +8,10 @@ namespace Ozkaal.Gameplay.Gameplay.Interaction.Symbols
 {
     public partial class WorldSymbolGroup : MonoBehaviour, IInteractable
     {
+        public WorldSymbolGroup(WorldSymbol[] symbols)
+        {
+            Symbols = symbols;
+        }
         public WorldSymbol[] Symbols {get; private set;}
 
         private bool temp;

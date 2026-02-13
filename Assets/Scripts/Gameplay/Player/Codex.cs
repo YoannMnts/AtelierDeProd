@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Ozkaal.Core.Core.Datas.SymbolDatas;
+using Ozkaal.Core.Datas.SymbolDatas;
 using Ozkaal.Gameplay.Gameplay.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -15,15 +15,17 @@ namespace Ozkaal.Gameplay.Gameplay.Player
         public bool TryGetCodexSymbol(string guid, out CodexSymbol symbol) => symbols.TryGetValue(guid, out symbol);
         
         
-        private Dictionary<string, CodexSymbol> symbols = new ();
-
-        private bool temp;
+        private readonly Dictionary<string, CodexSymbol> symbols;
+        
         public Codex()
         {
+            symbols = new Dictionary<string, CodexSymbol>();
             var entries = Resources.LoadAll<SymbolData>("ScriptableObject/CodexEntries");
             for (int i = 0; i < entries.Length; i++)
             {
-                symbols.Add(entries[i].SymbolID, new CodexSymbol(entries[i], string.Empty, false));
+                SymbolData entry = entries[i];
+                CodexSymbol codexSymbol = new CodexSymbol(entry, string.Empty, false);
+                symbols.Add(entry.SymbolID, codexSymbol);
             }
         }
 
