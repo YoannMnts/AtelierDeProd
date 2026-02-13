@@ -12,19 +12,16 @@ namespace Gameplay.Creature
         [SerializeField]
         private int numberOfSentence = 3;
         
-        [SerializeField]
-        private Transform symbolGroupRoot;
-        
         private Creature currentCreature;
         
         private void Start()
         {
-            currentCreature = new Creature(numberOfSentence);
+            currentCreature = CreatureManager.CreateCreature(numberOfSentence);
         }
 
         public void Interact(PlayerInteraction playerInteraction)
         {
-            currentCreature.Talk();
+            currentCreature.Talk(playerInteraction.PlayerController.Codex);
         }
     }
 }
