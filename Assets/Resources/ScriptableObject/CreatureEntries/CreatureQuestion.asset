@@ -16,6 +16,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: afe9ed26cb93dcc4cab266a179562340, type: 2}
   - {fileID: 11400000, guid: 2ddab600d0b879943a9ac95caff77f9e, type: 2}
   - {fileID: 11400000, guid: 6f7fa485e6483c1468cb7be0261fd99b, type: 2}
-  <Question>k__BackingField: []
+  <Question>k__BackingField:
+  - {fileID: 11400000, guid: 0e540ba4ca5e2f04791ca5ff2a1cadf4, type: 2}
   <MinFriendshipAmount>k__BackingField: 0
   <MaxFriendshipAmount>k__BackingField: 0
