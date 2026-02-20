@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16c73f490863446592ee6c42674b9a28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ADP.Gameplay::ADP.Gameplay.Gameplay.Interaction.Symbols.WorldSymbolGroup
+  <SymbolDatas>k__BackingField: []
 --- !u!135 &88030727175925464
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -65,4 +66,4 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 2
-  m_Center: {x: -1.02, y: 0, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
