@@ -5,6 +5,7 @@ using Ozkaal.Gameplay.Gameplay.Player;
 using Ozkaal.Gameplay.Gameplay.UI;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace Gameplay.Creature.UI
 {
@@ -17,7 +18,7 @@ namespace Gameplay.Creature.UI
         private Transform answersRoot;
         
         [SerializeField] 
-        private Transform answerPrefab;
+        private AnswerUI answerPrefab;
         
         [SerializeField]
         private SymbolUI symbolPrefab;
@@ -78,19 +79,25 @@ namespace Gameplay.Creature.UI
                 {
                     instance.Connect(symbol);
                     symbols[symbolData.SymbolID] = instance;
+                    PlayerController.Instance.Codex.DiscoverSymbol(symbolData.SymbolID);
                 }
             }
             for (int i = 0; i < creature.CurrentCreatureQuestion.Answers.Length; i++)
             {
-                Transform answerInstance = Instantiate(answerPrefab, answersRoot);
-                for (int j = 0; j < creature.CurrentCreatureQuestion.Answers[i].SymbolDatas.Length; j++)
+                AnswerUI answerInstance = Instantiate(answerPrefab, answersRoot);
+                AnswerData answerData = creature.CurrentCreatureQuestion.Answers[i];
+                answerInstance.Init(creature, answerData);
+                
+                Transform symbolRoot = answerInstance.transform;
+                for (int j = 0; j < answerData.SymbolDatas.Length; j++)
                 {
-                    SymbolUI instance = Instantiate(symbolPrefab, answerInstance);
-                    SymbolData symbolData = creature.CurrentCreatureQuestion.Answers[i].SymbolDatas[j];
+                    SymbolUI instance = Instantiate(symbolPrefab, symbolRoot);
+                    SymbolData symbolData = answerData.SymbolDatas[j];
                     if (codex.TryGetCodexSymbol(symbolData.SymbolID, out CodexSymbol symbol))
                     {
                         instance.Connect(symbol);
                         symbols[symbolData.SymbolID] = instance;
+                        PlayerController.Instance.Codex.DiscoverSymbol(symbolData.SymbolID);
                     }
                 }
             }

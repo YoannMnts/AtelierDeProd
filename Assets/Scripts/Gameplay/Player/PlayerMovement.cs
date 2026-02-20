@@ -310,5 +310,10 @@ namespace Ozkaal.Gameplay.Gameplay.Player
                 smoothTime
             );
         }
+
+        public void FreezePlayer(bool isFreeze)
+        {
+            rb.constraints = isFreeze ? RigidbodyConstraints.FreezeAll : RigidbodyConstraints.FreezeRotation;
+        }
     }
 }
