@@ -45,10 +45,10 @@ namespace Ozkaal.Gameplay.Gameplay.UI
             }
             CurrentCodex = codex;
             CurrentGroup = group;
-            for (int i = 0; i < group.Symbols.Length; i++)
+            for (int i = 0; i < group.SymbolDatas.Length; i++)
             {
                 SymbolUI instance = Instantiate(prefab, root);
-                SymbolData symbolData = group.Symbols[i].SymbolData;
+                SymbolData symbolData = group.SymbolDatas[i];
                 if (codex.TryGetCodexSymbol(symbolData.SymbolID, out CodexSymbol symbol))
                 {
                     instance.Connect(symbol);
