@@ -4,9 +4,6 @@ using UnityEngine;
 namespace Ozkaal.Gameplay.Gameplay.Player
 {
     [DefaultExecutionOrder(-5)]
-    //Make for POC :
-    //OnEnable + OnDisable for CodexUI
-    //NEED TO REWORK
     public class PlayerController : MonoBehaviour
     {
         public static PlayerController Instance { get; private set; }
@@ -34,14 +31,9 @@ namespace Ozkaal.Gameplay.Gameplay.Player
                 component.playerController = this;
         }
 
-        private void OnEnable()
+        public void FreezePlayer(bool isFreeze)
         {
-            //PlayerControls.CodexInput.performed += Codex.ConnectToUI;
-        }
-
-        private void OnDisable()
-        {
-            //PlayerControls.CodexInput.performed -= Codex.ConnectToUI;
+            PlayerMovement.FreezePlayer(isFreeze);
         }
     }
 }

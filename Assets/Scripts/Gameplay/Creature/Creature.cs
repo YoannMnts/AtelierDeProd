@@ -43,8 +43,10 @@ namespace Gameplay.Creature
             if (IsAlreadyTalking)
             {
                 StopTalking();
+                PlayerController.Instance.FreezePlayer(false);
                 return;
             }
+            PlayerController.Instance.FreezePlayer(true);
             currentCodex = codex;
             using (ListPool<CreatureQuestionData>.Get(out var validCreatureQuestionDatas))
             {
