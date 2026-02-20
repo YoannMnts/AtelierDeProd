@@ -24,12 +24,12 @@ namespace Ozkaal.Gameplay.Gameplay.Interaction.Symbols
             if (temp)
             {
                 SymbolGroupUI.Main.Connect(playerInteraction.PlayerController.Codex, this);
-                PlayerController.Instance.FreezePLayer(true);
+                PlayerController.Instance.FreezePlayer(true);
             }
             else
             {
                 SymbolGroupUI.Main.Disconnect(playerInteraction.PlayerController.Codex, this);
-                PlayerController.Instance.FreezePLayer(false);
+                PlayerController.Instance.FreezePlayer(false);
             }
             for (int i = 0; i < SymbolDatas.Length; i++)
             {

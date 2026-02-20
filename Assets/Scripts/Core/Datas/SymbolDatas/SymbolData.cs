@@ -13,7 +13,7 @@ namespace Ozkaal.Core.Datas.SymbolDatas
         [field : SerializeField]
         public Sprite Icon { get; private set; }
         
-        [field: SerializeField]
+        [field: SerializeField, HideInInspector]
         public string SymbolID { get; private set; }
 
         private void OnValidate()
@@ -22,6 +22,7 @@ namespace Ozkaal.Core.Datas.SymbolDatas
             {
                 GenerateNewGuid();
             }
+            
 #if UNITY_EDITOR
              string[] existings = AssetDatabase.FindAssets($"t:{nameof(SymbolData)}");
              for (int i = 0; i < existings.Length; i++)
