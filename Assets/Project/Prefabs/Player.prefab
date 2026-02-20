@@ -490,7 +490,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2994ef382d594c2b9a8b6503c696a912, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Player.PlayerInteraction
-  interactRange: 5
+  interactRange: 2
 --- !u!1 &8823940895176388756
 GameObject:
   m_ObjectHideFlags: 0
