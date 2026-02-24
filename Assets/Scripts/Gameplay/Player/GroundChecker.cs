@@ -5,6 +5,9 @@ namespace Ozkaal.Gameplay.Gameplay.Player
 {
     public class GroundChecker : MonoBehaviour
     {
+        public LayerMask GroundLayer => groundLayer;
+        
+        
         [SerializeField] private float groundDistance;
         [SerializeField] private LayerMask groundLayer;
         
@@ -14,8 +17,9 @@ namespace Ozkaal.Gameplay.Gameplay.Player
         private void Update()
         {
             Physics.SphereCast(transform.position, groundDistance, Vector3.down, out RaycastHit hit, groundDistance,groundLayer);
+            Debug.Log($"Hit normal: {hit.normal}");
             IsGrounded = hit.normal.y >= 0.75f;
-            GroundNormal = hit.normal;
+            GroundNormal = IsGrounded ? hit.normal : Vector3.zero;
         }
     }
 }

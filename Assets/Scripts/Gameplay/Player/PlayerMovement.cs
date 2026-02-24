@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -7,7 +8,7 @@ using Utilities;
 
 namespace Ozkaal.Gameplay.Gameplay.Player
 {
-    public class PlayerMovement : MonoBehaviour
+    public partial class PlayerMovement : MonoBehaviour
     {
         /* ───────────────────────── REFERENCES ───────────────────────── */
 
@@ -81,6 +82,10 @@ namespace Ozkaal.Gameplay.Gameplay.Player
 
         // Vertical velocity applied to the Rigidbody for jumping/falling
         private float jumpVelocity;
+
+        private float jumpGravity;
+
+        private float initialVelocity;
         
         private float currentGravity;
 
@@ -97,6 +102,8 @@ namespace Ozkaal.Gameplay.Gameplay.Player
         private CountdownTimer jumpCountdownTimer;
 
         private CapsuleCollider currentCollider;
+        
+        private bool hasACeiling;
 
         /* ───────────────────────── UNITY LIFECYCLE ───────────────────────── */
 
@@ -124,6 +131,8 @@ namespace Ozkaal.Gameplay.Gameplay.Player
             input.EnablePlayerActions();
             currentCollider = defaultCollider;
             crouchCollider.enabled = false;
+            jumpGravity = (8f * jumpMaxHeight) / (jumpDuration * jumpDuration);
+            initialVelocity = (4f * jumpMaxHeight) / jumpDuration;
         }
 
         private void OnEnable()
@@ -153,15 +162,13 @@ namespace Ozkaal.Gameplay.Gameplay.Player
             if (performed && !jumpTimer.IsRunning && !jumpCountdownTimer.IsRunning && groundChecker.IsGrounded)
             {
                 jumpTimer.Start();
-                float jumpGravity = (8f * jumpMaxHeight) / (jumpDuration * jumpDuration);
-                float initialVelocity = (4f * jumpMaxHeight) / jumpDuration;
-
                 currentGravity = -jumpGravity; // on stocke
                 jumpVelocity = initialVelocity;
             }
             // Optional early jump cancel
             else if (!performed && jumpTimer.IsRunning)
             {
+                currentGravity = groundChecker.IsGrounded ? -jumpGravity : -jumpGravity * gravityMultiplier; // on stocke
                 jumpTimer.Stop();
             }
         }
@@ -176,8 +183,18 @@ namespace Ozkaal.Gameplay.Gameplay.Player
             }
             else if (!wantToCrouch || !groundChecker.IsGrounded)
             {
-                ActivateColliders(defaultCollider);
-                crouchRenderer.material = defaultMaterial;
+                Vector3 center = rb.position + Vector3.up;
+                Vector3 size = Vector3.one * 0.5f;
+                Collider[] hit = Physics.OverlapBox(center, size, Quaternion.identity, groundChecker.GroundLayer);
+                foreach (Collider collider in hit)
+                    Debug.Log($"Colliding with {collider.gameObject.name}");
+                hasACeiling = hit.Length > 0;
+                Debug.Log($"hasACeiling: {hasACeiling}");
+                if (!hasACeiling)
+                {
+                    ActivateColliders(defaultCollider);
+                    crouchRenderer.material = defaultMaterial;
+                }
             }
         }
 
@@ -241,7 +258,8 @@ namespace Ozkaal.Gameplay.Gameplay.Player
             else
             {
                 // Apply gravity when not actively jumping
-                jumpVelocity += currentGravity * gravityMultiplier * Time.fixedDeltaTime;
+                jumpVelocity += currentGravity * Time.fixedDeltaTime;
+                jumpVelocity = Mathf.Clamp(jumpVelocity, -initialVelocity, initialVelocity);
             }
             
             
