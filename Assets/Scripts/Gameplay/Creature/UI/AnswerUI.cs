@@ -93,44 +93,7 @@ public class AnswerUI : MonoBehaviour
         {
             Debug.Log(e);
             throw;
-        }
 
-        private async Awaitable CreatureAnswered()
-        {
-            try
-            {
-                for (int i = 0; i < answerData.CreatureAnswerDatas.Length; i++)
-                {
-                    SymbolUI instance = Instantiate(currentCreatureUI.SymbolPrefab, currentCreatureUI.QuestionsRoot);
-                    SymbolData symbolData = answerData.CreatureAnswerDatas[i];
-                    if (currentCreatureUI.Codex.TryGetCodexSymbol(symbolData.SymbolID, out CodexSymbol symbol))
-                    {
-                        instance.Connect(symbol);
-                        symbols[symbolData.SymbolID] = instance;
-                        Debug.Log("AAAAAAAAA");
-                        PlayerController.Instance.Codex.DiscoverSymbol(symbolData.SymbolID);
-                    }
-                }
-                /*
-                await Awaitable.WaitForSecondsAsync(5);
-                foreach (var (guid, symbolUI) in symbols)
-                {
-                    if (currentCreatureUI.Codex.TryGetCodexSymbol(guid, out var codexSymbol))
-                    {
-                        symbolUI.Disconnect(codexSymbol);
-                    }
-                }
-                foreach (Transform t in currentCreatureUI.QuestionsRoot)
-                {
-                    Destroy(t.gameObject);
-                }
-                */
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
         }
     }
 }
