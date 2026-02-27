@@ -11,6 +11,11 @@ namespace Gameplay.Creature.UI
 {
     public class CreatureUI : MonoBehaviour
     {
+        public Transform QuestionsRoot => questionsRoot;
+        public SymbolUI SymbolPrefab => symbolPrefab;
+        
+        public Codex Codex { get; private set; }
+
         [SerializeField] 
         private Transform questionsRoot;
         
@@ -71,6 +76,7 @@ namespace Gameplay.Creature.UI
 
         private void OnCreatureTalk(Creature creature,Codex codex)
         {
+            Codex = codex;
             for (int i = 0; i < creature.CurrentCreatureQuestion.Question.Length; i++)
             {
                 SymbolUI instance = Instantiate(symbolPrefab, questionsRoot);
@@ -86,13 +92,13 @@ namespace Gameplay.Creature.UI
             {
                 AnswerUI answerInstance = Instantiate(answerPrefab, answersRoot);
                 AnswerData answerData = creature.CurrentCreatureQuestion.Answers[i];
-                answerInstance.Init(creature, answerData);
+                answerInstance.Init(this, creature, answerData);
                 
                 Transform symbolRoot = answerInstance.transform;
-                for (int j = 0; j < answerData.SymbolDatas.Length; j++)
+                for (int j = 0; j < answerData.AnswerDatas.Length; j++)
                 {
                     SymbolUI instance = Instantiate(symbolPrefab, symbolRoot);
-                    SymbolData symbolData = answerData.SymbolDatas[j];
+                    SymbolData symbolData = answerData.AnswerDatas[j];
                     if (codex.TryGetCodexSymbol(symbolData.SymbolID, out CodexSymbol symbol))
                     {
                         instance.Connect(symbol);
