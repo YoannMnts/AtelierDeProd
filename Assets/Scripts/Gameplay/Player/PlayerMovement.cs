@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -176,12 +177,7 @@ public partial class PlayerMovement : MonoBehaviour
         }
         else if (!wantToCrouch || !groundChecker.IsGrounded)
         {
-            Vector3 center = rb.position + Vector3.up;
-            Vector3 size = Vector3.one * 0.5f;
-            Collider[] hit = Physics.OverlapBox(center, size, Quaternion.identity, groundChecker.GroundLayer);
-            foreach (Collider collider in hit)
-                Debug.Log($"Colliding with {collider.gameObject.name}");
-            hasACeiling = hit.Length > 0;
+            CeilingCheck();
             Debug.Log($"hasACeiling: {hasACeiling}");
             if (!hasACeiling)
             {
@@ -189,6 +185,14 @@ public partial class PlayerMovement : MonoBehaviour
                 crouchRenderer.material = defaultMaterial;
             }
         }
+    }
+
+    private void CeilingCheck()
+    {
+        Vector3 center = rb.position + Vector3.up;
+        Vector3 size = Vector3.one * 0.5f;
+        Collider[] hit = Physics.OverlapBox(center, size, Quaternion.identity, groundChecker.GroundLayer);
+        hasACeiling = hit.Length > 0;
     }
 
     private void ActivateColliders(CapsuleCollider newCollider)
@@ -215,7 +219,20 @@ public partial class PlayerMovement : MonoBehaviour
         HandleMovement();
 
         // Handle vertical movement (jump & gravity)
+        HandleCrouch();
         HandleJump();
+    }
+
+    private void HandleCrouch()
+    {
+        if (!hasACeiling)
+            return;
+        CeilingCheck();
+        if (!hasACeiling)
+        {
+            ActivateColliders(defaultCollider);
+            crouchRenderer.material = defaultMaterial;
+        }
     }
 
 
