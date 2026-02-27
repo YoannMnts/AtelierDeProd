@@ -18,10 +18,13 @@ public class SymbolGroupUI : MonoBehaviour
         
         
     private Dictionary<string, SymbolUI> symbols;
+    
+    private CanvasGroup canvasGroup;
 
     private void Awake()
     {
         symbols = new Dictionary<string, SymbolUI>();
+        canvasGroup = GetComponent<CanvasGroup>();
     }
 
     private void Start()
@@ -30,6 +33,7 @@ public class SymbolGroupUI : MonoBehaviour
         {
             Destroy(t.gameObject);
         }
+        HideCanvas();
     }
 
     public void Connect(Codex codex, WorldSymbolGroup group)
@@ -38,6 +42,8 @@ public class SymbolGroupUI : MonoBehaviour
         {
             Disconnect(CurrentCodex, CurrentGroup);
         }
+
+        ShowCanvas();
         CurrentCodex = codex;
         CurrentGroup = group;
         for (int i = 0; i < group.SymbolDatas.Length; i++)
@@ -51,8 +57,15 @@ public class SymbolGroupUI : MonoBehaviour
             }
         }
     }
-        
-        
+
+    private void ShowCanvas()
+    {
+        canvasGroup.alpha = 1;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+    }
+
+
     public void Disconnect(Codex codex, WorldSymbolGroup group)
     {
         if (CurrentCodex != codex)
@@ -70,5 +83,13 @@ public class SymbolGroupUI : MonoBehaviour
         {
             Destroy(t.gameObject);
         }
+        HideCanvas();
+    }
+
+    private void HideCanvas()
+    {
+        canvasGroup.alpha = 0;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
     }
 }
