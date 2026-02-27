@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Gameplay.Creature;
 using Ozkaal.Core.Datas.SymbolDatas;
 using Ozkaal.Gameplay.Gameplay.Interaction.Symbols;
 using Ozkaal.Gameplay.Gameplay.Player;

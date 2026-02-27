@@ -6,7 +6,10 @@ namespace Ozkaal.Core.Datas.SymbolDatas
     public class AnswerData : ScriptableObject
     {
         [field: SerializeField]
-        public SymbolData[] SymbolDatas {get; private set;}
+        public SymbolData[] AnswerDatas {get; private set;}
+        
+        [field: SerializeField]
+        public SymbolData[] CreatureAnswerDatas {get; private set;}
         
         [field: SerializeField]
         public int GainOrLossAmount {get; private set;}
