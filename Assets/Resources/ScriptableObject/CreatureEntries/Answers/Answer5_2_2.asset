@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89b5e21ba23d46d0a27721caadc00db3, type: 3}
   m_Name: Answer5_2_2
   m_EditorClassIdentifier: Ozkaal.Core::Ozkaal.Core.Datas.SymbolDatas.AnswerData
-  <SymbolDatas>k__BackingField:
+  <AnswerDatas>k__BackingField:
   - {fileID: 11400000, guid: f6107114f2d569c4d8527f36e274a368, type: 2}
+  <CreatureAnswerDatas>k__BackingField:
+  - {fileID: 11400000, guid: 998d3e0e441da134ab372c08f06f2782, type: 2}
+  - {fileID: 11400000, guid: 2394e447fa602724caab31b13839d585, type: 2}
   <GainOrLossAmount>k__BackingField: 2

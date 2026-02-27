@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89b5e21ba23d46d0a27721caadc00db3, type: 3}
   m_Name: Answer1_3_1
   m_EditorClassIdentifier: Ozkaal.Core::Ozkaal.Core.Datas.SymbolDatas.AnswerData
-  <SymbolDatas>k__BackingField:
+  <AnswerDatas>k__BackingField:
   - {fileID: 11400000, guid: 5670c98e6ad30c0458fb98dd2d134364, type: 2}
-  <GainOrLossAmount>k__BackingField: 0
+  <CreatureAnswerDatas>k__BackingField: []
+  <GainOrLossAmount>k__BackingField: -1

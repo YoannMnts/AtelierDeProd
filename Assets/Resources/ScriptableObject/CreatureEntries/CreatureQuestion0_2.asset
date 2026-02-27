@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0553ff3e5144e56bd25e99b7c1519b7, type: 3}
+  m_Name: CreatureQuestion0_2
+  m_EditorClassIdentifier: Ozkaal.Core::Ozkaal.Core.Datas.CreatureQuestionDatas.CreatureQuestionData
+  <Answers>k__BackingField:
+  - {fileID: 11400000, guid: 0b5c74d66ca20424e8563bb20836865d, type: 2}
+  - {fileID: 11400000, guid: 17383daae51f79a42b630cfb558d14d5, type: 2}
+  - {fileID: 11400000, guid: 967d8b1b33174c140bb603851b6d9688, type: 2}
+  <Question>k__BackingField:
+  - {fileID: 11400000, guid: 6037abb14c9b0ae45abf3a44a369bfe7, type: 2}
+  - {fileID: 11400000, guid: 9292f4f995c98e241b89397e82466718, type: 2}
+  <MinFriendshipAmount>k__BackingField: 0
+  <MaxFriendshipAmount>k__BackingField: 0
