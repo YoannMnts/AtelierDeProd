@@ -16,7 +16,7 @@ public class PlayerCamera : MonoBehaviour
     private float smoothTime;
     
     [SerializeField]
-    private GameObject cam;
+    private Camera cam;
 
     private void OnEnable()
     {
@@ -36,11 +36,10 @@ public class PlayerCamera : MonoBehaviour
 
     private void HandleZoom(Vector2 vector2)
     {
-        Debug.Log($"Zoom: {vector2.y}");
-        var scroll = vector2.y * zoomSpeed;
-        var newPosition = new Vector3(cam.transform.position.x, cam.transform.position.y, scroll);
-        newPosition.z = Mathf.Clamp(newPosition.z, minZoom, maxZoom);
-        cam.transform.position +=  newPosition;
+        var newZoomX = Mathf.Clamp(cam.sensorSize.x + vector2.x, minZoom, maxZoom);
+        var newZoomY = Mathf.Clamp(cam.sensorSize.y + vector2.y, minZoom, maxZoom);
+        var newVector = new Vector2(newZoomX, newZoomY);
+        cam.sensorSize = newVector;
     }
 
     public void UpdateCamera()
