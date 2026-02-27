@@ -1,33 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-namespace Gameplay.Creature
+public static class CreatureManager
 {
-    public static class CreatureManager
+    public static event Action<Creature> OnCreatureCreated;
+    public static event Action<Creature> OnCreatureDestroyed;
+        
+    private static List<Creature> creatures = new();
+        
+    public static IReadOnlyList<Creature> Creatures => creatures;
+
+    public static Creature CreateCreature()
     {
-        public static event Action<Creature> OnCreatureCreated;
-        public static event Action<Creature> OnCreatureDestroyed;
-        
-        private static List<Creature> creatures = new();
-        
-        public static IReadOnlyList<Creature> Creatures => creatures;
+        var creature = new Creature();
+        creatures.Add(creature);
+        OnCreatureCreated?.Invoke(creature);
+        return creature;
+    }
 
-        public static Creature CreateCreature(int numberOfSentence)
+    public static bool DestroyCreature(Creature creature)
+    {
+        if (creatures.Remove(creature))
         {
-            var creature = new Creature(numberOfSentence);
-            creatures.Add(creature);
-            OnCreatureCreated?.Invoke(creature);
-            return creature;
+            OnCreatureDestroyed?.Invoke(creature);
+            return true;
         }
-
-        public static bool DestroyCreature(Creature creature)
-        {
-            if (creatures.Remove(creature))
-            {
-                OnCreatureDestroyed?.Invoke(creature);
-                return true;
-            }
-            return false;
-        }
+        return false;
     }
 }

@@ -1,76 +1,98 @@
 ﻿using System;
 using System.Collections.Generic;
-using Ozkaal.Core.Datas.SymbolDatas;
-using Ozkaal.Gameplay.Gameplay.Player;
-using Ozkaal.Gameplay.Gameplay.UI;
+using Ozkaal.Core;
 using UnityEngine;
+using UnityEngine.UI;
 using Action = Unity.Plastic.Newtonsoft.Json.Serialization.Action;
 
-namespace Gameplay.Creature.UI
+public class AnswerUI : MonoBehaviour
 {
-    public class AnswerUI : MonoBehaviour
+    public event Action OnButtonClick; 
+        
+    private Creature currentCreature;
+        
+    private CreatureUI currentCreatureUI;
+        
+    private AnswerData answerData;
+
+    private Dictionary<string, SymbolUI> symbols;
+        
+    private Button button;
+        
+    private bool isBadAnswer;
+
+    private void Awake()
     {
-        public event Action OnButtonClick; 
-        
-        private Creature currentCreature;
-        
-        private CreatureUI currentCreatureUI;
-        
-        private AnswerData answerData;
+        symbols = new();
+        button = GetComponent<Button>();
+    }
 
-        private Dictionary<string, SymbolUI> symbols;
-        public void Init(CreatureUI creatureUI, Creature creature, AnswerData answerDatas)
-        {
-            currentCreature = creature;
-            answerData = answerDatas;
-            currentCreatureUI = creatureUI;
-        }
-        
-        public void OnClick()
-        {
-            Debug.Log($"Add : {answerData.GainOrLossAmount} to friendship");
-            currentCreature.AddOrRemoveFriendship(answerData.GainOrLossAmount);
+    private void OnEnable()
+    {
+        button.onClick.AddListener(OnClick);
+    }
+
+    private void OnDisable()
+    {
+        button.onClick.RemoveListener(OnClick);
+    }
+
+    public void Init(CreatureUI creatureUI, Creature creature, AnswerData answerData)
+    {
+        currentCreatureUI = creatureUI;
+        currentCreature = creature;
+        this.answerData = answerData;
+        isBadAnswer = answerData.GainOrLossAmount <= 0;
+    }
+
+    private void OnClick()
+    {
+        currentCreature.AddOrRemoveFriendship(answerData.GainOrLossAmount);
+        Debug.Log($"IsBadAnswer: {isBadAnswer}");
+        if (isBadAnswer)
+            currentCreature.StopTalking(30);
+        else
             currentCreature.StopTalking();
-            _ = CreatureAnswered();
-            OnButtonClick?.Invoke();
-        }
+            
+        _ = CreatureAnswered();
+        OnButtonClick?.Invoke();
+    }
 
-        private async Awaitable CreatureAnswered()
+    private async Awaitable CreatureAnswered()
+    {
+        try
         {
-            try
+            for (int i = 0; i < answerData.CreatureAnswerDatas.Length; i++)
             {
-                for (int i = 0; i < answerData.CreatureAnswerDatas.Length; i++)
+                SymbolUI instance = Instantiate(currentCreatureUI.SymbolPrefab, currentCreatureUI.QuestionsRoot);
+                SymbolData symbolData = answerData.CreatureAnswerDatas[i];
+                if (currentCreatureUI.Codex.TryGetCodexSymbol(symbolData.SymbolID, out CodexSymbol symbol))
                 {
-                    SymbolUI instance = Instantiate(currentCreatureUI.SymbolPrefab, currentCreatureUI.QuestionsRoot);
-                    SymbolData symbolData = answerData.CreatureAnswerDatas[i];
-                    if (currentCreatureUI.Codex.TryGetCodexSymbol(symbolData.SymbolID, out CodexSymbol symbol))
-                    {
-                        instance.Connect(symbol);
-                        symbols[symbolData.SymbolID] = instance;
-                        Debug.Log("AAAAAAAAA");
-                        PlayerController.Instance.Codex.DiscoverSymbol(symbolData.SymbolID);
-                    }
+                    instance.Connect(symbol);
+                    symbols[symbolData.SymbolID] = instance;
+                    PlayerController.Instance.Codex.DiscoverSymbol(symbolData.SymbolID);
                 }
-                /*
-                await Awaitable.WaitForSecondsAsync(5);
-                foreach (var (guid, symbolUI) in symbols)
-                {
-                    if (currentCreatureUI.Codex.TryGetCodexSymbol(guid, out var codexSymbol))
-                    {
-                        symbolUI.Disconnect(codexSymbol);
-                    }
-                }
-                foreach (Transform t in currentCreatureUI.QuestionsRoot)
-                {
-                    Destroy(t.gameObject);
-                }
-                */
             }
-            catch (Exception e)
+            await Awaitable.WaitForSecondsAsync(5);
+            foreach (var (guid, symbolUI) in symbols)
             {
-                Console.WriteLine(e);
-                throw;
+                if (currentCreatureUI.Codex.TryGetCodexSymbol(guid, out var codexSymbol))
+                {
+                    symbolUI.Disconnect(codexSymbol);
+                }
             }
+            foreach (Transform t in currentCreatureUI.QuestionsRoot)
+            {
+                Destroy(t.gameObject);
+            }
+                
+            //A enlever !!!!!!!!!!
+            PlayerController.Instance.FreezePlayer(false);
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+            throw;
         }
     }
 }

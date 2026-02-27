@@ -1,27 +1,16 @@
-﻿using System;
-using Ozkaal.Gameplay.Gameplay.Interaction;
-using Ozkaal.Gameplay.Gameplay.Player;
-using Ozkaal.Gameplay.Gameplay.UI;
-using UnityEngine;
-using UnityEngine.Serialization;
+﻿using UnityEngine;
 
-namespace Gameplay.Creature
+public class WorldCreature : MonoBehaviour, IInteractable
 {
-    public class WorldCreature : MonoBehaviour, IInteractable
+    private Creature currentCreature;
+        
+    private void Start()
     {
-        [SerializeField]
-        private int numberOfSentence = 3;
-        
-        private Creature currentCreature;
-        
-        private void Start()
-        {
-            currentCreature = CreatureManager.CreateCreature(numberOfSentence);
-        }
+        currentCreature = CreatureManager.CreateCreature();
+    }
 
-        public void Interact(PlayerInteraction playerInteraction)
-        {
-            currentCreature.Talk(playerInteraction.PlayerController.Codex);
-        }
+    public void Interact(PlayerInteraction playerInteraction)
+    {
+        currentCreature.Talk(playerInteraction.PlayerController.Codex);
     }
 }
