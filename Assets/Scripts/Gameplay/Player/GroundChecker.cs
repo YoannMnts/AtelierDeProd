@@ -11,10 +11,9 @@ public class GroundChecker : MonoBehaviour
     public bool IsGrounded { get; private set; }
     public Vector3 GroundNormal { get; private set; }
 
-    private void Update()
+    private void FixedUpdate()
     {
         Physics.SphereCast(transform.position, groundDistance, Vector3.down, out RaycastHit hit, groundDistance,groundLayer);
-        Debug.Log($"Hit normal: {hit.normal}");
         IsGrounded = hit.normal.y >= 0.75f;
         GroundNormal = IsGrounded ? hit.normal : Vector3.zero;
     }

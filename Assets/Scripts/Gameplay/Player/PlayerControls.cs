@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 [CreateAssetMenu(fileName = "PlayerControls", menuName = "Player/Controls")]
 public class PlayerControls : ScriptableObject, PlayerInputAction.IPlayerActions
 {
+   public event Action<Vector2> Zoom;
    public event Action<Vector2> Move = delegate { };
    public event Action<bool> Jump = delegate { };
    public event Action<bool> Crouch = delegate { };
@@ -25,9 +26,19 @@ public class PlayerControls : ScriptableObject, PlayerInputAction.IPlayerActions
          inputActions = new PlayerInputAction();
          inputActions.Player.SetCallbacks(this);
       }
-      inputActions.Enable();
+
+      EnablePlayerActions();
    }
 
+   private void OnDisable()
+   {
+      DisablePlayerActions();
+   }
+
+   public void DisablePlayerActions()
+   {
+      inputActions.Disable();
+   }
    public void EnablePlayerActions()
    {
       inputActions.Enable();
@@ -83,5 +94,10 @@ public class PlayerControls : ScriptableObject, PlayerInputAction.IPlayerActions
             Crouch?.Invoke(false);
             break;
       }
+   }
+
+   public void OnZoom(InputAction.CallbackContext context)
+   {
+      Zoom?.Invoke(context.ReadValue<Vector2>());
    }
 }
