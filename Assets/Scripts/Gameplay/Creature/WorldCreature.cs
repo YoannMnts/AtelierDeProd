@@ -1,6 +1,4 @@
-﻿using Ozkaal.Gameplay.Gameplay.Interaction;
-using Ozkaal.Gameplay.Gameplay.Player;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class WorldCreature : MonoBehaviour, IInteractable
 {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Ozkaal.Core.Datas.SymbolDatas
+namespace Ozkaal.Core
 {
     [CreateAssetMenu(fileName = "AnswerData", menuName = "Datas/Answer", order = 0)]
     public class AnswerData : ScriptableObject

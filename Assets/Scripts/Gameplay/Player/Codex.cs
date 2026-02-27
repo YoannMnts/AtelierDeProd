@@ -1,57 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using Ozkaal.Core.Datas.SymbolDatas;
-using Ozkaal.Gameplay.Gameplay.UI;
+﻿using System.Collections.Generic;
+using Ozkaal.Core;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Pool;
 
-namespace Ozkaal.Gameplay.Gameplay.Player
+//Make for POC :
+//Properties for CodexSymbol Dictionary + ConnectToUI + temp
+public class Codex
 {
-    //Make for POC :
-    //Properties for CodexSymbol Dictionary + ConnectToUI + temp
-    public class Codex
+    public bool TryGetCodexSymbol(string guid, out CodexSymbol symbol) => symbols.TryGetValue(guid, out symbol);
+        
+        
+    private readonly Dictionary<string, CodexSymbol> symbols;
+        
+    public Codex()
     {
-        public bool TryGetCodexSymbol(string guid, out CodexSymbol symbol) => symbols.TryGetValue(guid, out symbol);
-        
-        
-        private readonly Dictionary<string, CodexSymbol> symbols;
-        
-        public Codex()
+        symbols = new Dictionary<string, CodexSymbol>();
+        var entries = Resources.LoadAll<SymbolData>("ScriptableObject/CodexEntries");
+        for (int i = 0; i < entries.Length; i++)
         {
-            symbols = new Dictionary<string, CodexSymbol>();
-            var entries = Resources.LoadAll<SymbolData>("ScriptableObject/CodexEntries");
-            for (int i = 0; i < entries.Length; i++)
-            {
-                SymbolData entry = entries[i];
-                CodexSymbol codexSymbol = new CodexSymbol(entry, string.Empty, false);
-                symbols.Add(entry.SymbolID, codexSymbol);
-            }
+            SymbolData entry = entries[i];
+            CodexSymbol codexSymbol = new CodexSymbol(entry, string.Empty, false);
+            symbols.Add(entry.SymbolID, codexSymbol);
         }
+    }
 
-        public void SetTranslation(string guid, string translation)
+    public void SetTranslation(string guid, string translation)
+    {
+        if (symbols.TryGetValue(guid, out CodexSymbol symbol))
         {
-            if (symbols.TryGetValue(guid, out CodexSymbol symbol))
-            {
-                symbol.SetTranslation(translation);
-            }
+            symbol.SetTranslation(translation);
         }
+    }
 
-        public void DiscoverSymbol(string guid)
+    public void DiscoverSymbol(string guid)
+    {
+        if (symbols.TryGetValue(guid, out CodexSymbol symbol))
         {
-            if (symbols.TryGetValue(guid, out CodexSymbol symbol))
-            {
-                symbol.Discover();
-            }
+            symbol.Discover();
         }
+    }
 
-        public bool IsSymbolDiscovered(string guid)
+    public bool IsSymbolDiscovered(string guid)
+    {
+        if (symbols.TryGetValue(guid, out CodexSymbol symbol))
         {
-            if (symbols.TryGetValue(guid, out CodexSymbol symbol))
-            {
-                return symbol.IsDiscovered;
-            }
-            return false;
+            return symbol.IsDiscovered;
         }
+        return false;
     }
 }

@@ -1,79 +1,74 @@
 ﻿using System.Collections.Generic;
-using Ozkaal.Core.Datas.SymbolDatas;
-using Ozkaal.Gameplay.Gameplay.Interaction.Symbols;
-using Ozkaal.Gameplay.Gameplay.Player;
+using Ozkaal.Core;
 using UnityEngine;
 
-namespace Ozkaal.Gameplay.Gameplay.UI
+public class SymbolGroupUI : MonoBehaviour
 {
-    public class SymbolGroupUI : MonoBehaviour
+    public static SymbolGroupUI Main => UIManager.instance.SymbolGroupUI;
+        
+    public Codex CurrentCodex { get; private set; }
+    public WorldSymbolGroup CurrentGroup { get; private set; }
+        
+        
+    [SerializeField]
+    private Transform root;
+        
+    [SerializeField]
+    private SymbolUI prefab;
+        
+        
+    private Dictionary<string, SymbolUI> symbols;
+
+    private void Awake()
     {
-        public static SymbolGroupUI Main => UIManager.instance.SymbolGroupUI;
-        
-        public Codex CurrentCodex { get; private set; }
-        public WorldSymbolGroup CurrentGroup { get; private set; }
-        
-        
-        [SerializeField]
-        private Transform root;
-        
-        [SerializeField]
-        private SymbolUI prefab;
-        
-        
-        private Dictionary<string, SymbolUI> symbols;
+        symbols = new Dictionary<string, SymbolUI>();
+    }
 
-        private void Awake()
+    private void Start()
+    {
+        foreach (Transform t in root)
         {
-            symbols = new Dictionary<string, SymbolUI>();
+            Destroy(t.gameObject);
         }
+    }
 
-        private void Start()
+    public void Connect(Codex codex, WorldSymbolGroup group)
+    {
+        if (CurrentCodex != null)
         {
-            foreach (Transform t in root)
-            {
-                Destroy(t.gameObject);
-            }
+            Disconnect(CurrentCodex, CurrentGroup);
         }
-
-        public void Connect(Codex codex, WorldSymbolGroup group)
+        CurrentCodex = codex;
+        CurrentGroup = group;
+        for (int i = 0; i < group.SymbolDatas.Length; i++)
         {
-            if (CurrentCodex != null)
+            SymbolUI instance = Instantiate(prefab, root);
+            SymbolData symbolData = group.SymbolDatas[i];
+            if (codex.TryGetCodexSymbol(symbolData.SymbolID, out CodexSymbol symbol))
             {
-                Disconnect(CurrentCodex, CurrentGroup);
-            }
-            CurrentCodex = codex;
-            CurrentGroup = group;
-            for (int i = 0; i < group.SymbolDatas.Length; i++)
-            {
-                SymbolUI instance = Instantiate(prefab, root);
-                SymbolData symbolData = group.SymbolDatas[i];
-                if (codex.TryGetCodexSymbol(symbolData.SymbolID, out CodexSymbol symbol))
-                {
-                    instance.Connect(symbol);
-                    symbols[symbolData.SymbolID] = instance;
-                }
+                instance.Connect(symbol);
+                symbols[symbolData.SymbolID] = instance;
             }
         }
+    }
         
         
-        public void Disconnect(Codex codex, WorldSymbolGroup group)
+    public void Disconnect(Codex codex, WorldSymbolGroup group)
+    {
+        if (CurrentCodex != codex)
         {
-            if (CurrentCodex != codex)
+            return;
+        }
+        foreach (var (guid, symbolUI) in symbols)
+        {
+            if (codex.TryGetCodexSymbol(guid, out var codexSymbol))
             {
-                return;
+                symbolUI.Disconnect(codexSymbol);
             }
-            foreach (var (guid, symbolUI) in symbols)
-            {
-                if (codex.TryGetCodexSymbol(guid, out var codexSymbol))
-                {
-                    symbolUI.Disconnect(codexSymbol);
-                }
-            }
-            foreach (Transform t in root)
-            {
-                Destroy(t.gameObject);
-            }
+        }
+        foreach (Transform t in root)
+        {
+            Destroy(t.gameObject);
         }
     }
 }

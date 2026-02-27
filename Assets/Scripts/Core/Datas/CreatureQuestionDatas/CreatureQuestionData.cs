@@ -1,7 +1,6 @@
-﻿using Ozkaal.Core.Datas.SymbolDatas;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Ozkaal.Core.Datas.CreatureQuestionDatas
+namespace Ozkaal.Core
 {
     [CreateAssetMenu(fileName = "CreatureQuestion", menuName = "Datas/Creature/Question", order = 0)]
     public class CreatureQuestionData : ScriptableObject

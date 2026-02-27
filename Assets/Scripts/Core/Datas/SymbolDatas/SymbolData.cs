@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Ozkaal.Core.Datas.SymbolDatas
+namespace Ozkaal.Core
 {
     [CreateAssetMenu(fileName = "SymbolData", menuName = "Datas/SymbolData", order = 0)]
     public class SymbolData : ScriptableObject

@@ -1,18 +1,14 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Ozkaal.Gameplay.Gameplay.Player
+public class PlayerCamera : MonoBehaviour
 {
-    public class PlayerCamera : MonoBehaviour
+    private void Update()
     {
-        private void Update()
-        {
-            UpdateCamera();
-        }
+        UpdateCamera();
+    }
 
-        public void UpdateCamera()
-        {
-            this.gameObject.transform.position = PlayerController.Instance.gameObject.transform.position;
-        }
+    public void UpdateCamera()
+    {
+        this.gameObject.transform.position = PlayerController.Instance.gameObject.transform.position;
     }
 }

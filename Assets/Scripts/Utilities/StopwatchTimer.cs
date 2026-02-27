@@ -1,18 +1,15 @@
-﻿namespace Utilities
+﻿public class StopwatchTimer : Timer
 {
-    public class StopwatchTimer : Timer
+    public StopwatchTimer() : base(0){}
+    public override void Tick(float deltaTime)
     {
-        public StopwatchTimer() : base(0){}
-        public override void Tick(float deltaTime)
+        if (IsRunning)
         {
-            if (IsRunning)
-            {
-                CurrentTime += deltaTime;
-            }
+            CurrentTime += deltaTime;
         }
-        
-        public void Reset() => CurrentTime = 0;
-        
-        public float GetCurrentTime() => CurrentTime;
     }
+        
+    public void Reset() => CurrentTime = 0;
+        
+    public float GetCurrentTime() => CurrentTime;
 }
