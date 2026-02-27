@@ -127,6 +127,7 @@ public partial class PlayerMovement : MonoBehaviour
         crouchCollider.enabled = false;
         jumpGravity = (8f * jumpMaxHeight) / (jumpDuration * jumpDuration);
         initialVelocity = (4f * jumpMaxHeight) / jumpDuration;
+        currentGravity = -jumpGravity;
     }
 
     private void OnEnable()
