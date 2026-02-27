@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Ozkaal.Core;
 using UnityEngine;
 using UnityEngine.UI;
-using Action = Unity.Plastic.Newtonsoft.Json.Serialization.Action;
 
 public class AnswerUI : MonoBehaviour
 {
