@@ -1,5 +1,7 @@
 ﻿using System;
 using Ozkaal.Core;
+using Ozkaal.Core.Datas.CreatureQuestionDatas;
+using Ozkaal.Gameplay.Gameplay.Player;
 using UnityEngine;
 using UnityEngine.Pool;
 using Random = UnityEngine.Random;

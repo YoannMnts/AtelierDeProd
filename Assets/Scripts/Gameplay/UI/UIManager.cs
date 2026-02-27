@@ -1,4 +1,3 @@
-using Gameplay.Creature;
 using UnityEngine;
 
 namespace Ozkaal.Gameplay.Gameplay.UI
