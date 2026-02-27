@@ -19,11 +19,13 @@ public partial class WorldSymbolGroup : MonoBehaviour, IInteractable
         {
             SymbolGroupUI.Main.Connect(playerInteraction.PlayerController.Codex, this);
             PlayerController.Instance.FreezePlayer(true);
+            PlayerController.Instance.PlayerControls.EnableUiActionsMap();
         }
         else
         {
             SymbolGroupUI.Main.Disconnect(playerInteraction.PlayerController.Codex, this);
             PlayerController.Instance.FreezePlayer(false);
+            PlayerController.Instance.PlayerControls.EnabledPlayerActionsMap();
         }
         for (int i = 0; i < SymbolDatas.Length; i++)
         {

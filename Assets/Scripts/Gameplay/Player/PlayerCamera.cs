@@ -36,8 +36,8 @@ public class PlayerCamera : MonoBehaviour
 
     private void HandleZoom(Vector2 vector2)
     {
-        var newZoomX = Mathf.Clamp(cam.sensorSize.x + vector2.x, minZoom, maxZoom);
-        var newZoomY = Mathf.Clamp(cam.sensorSize.y + vector2.y, minZoom, maxZoom);
+        var newZoomX = Mathf.Clamp(cam.sensorSize.x - vector2.x, minZoom, maxZoom);
+        var newZoomY = Mathf.Clamp(cam.sensorSize.y - vector2.y, minZoom, maxZoom);
         var newVector = new Vector2(newZoomX, newZoomY);
         cam.sensorSize = newVector;
     }

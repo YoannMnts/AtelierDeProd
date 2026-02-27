@@ -121,8 +121,6 @@ public partial class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        // Enable player input actions
-        input.EnablePlayerActions();
         currentCollider = defaultCollider;
         crouchCollider.enabled = false;
         jumpGravity = (8f * jumpMaxHeight) / (jumpDuration * jumpDuration);
@@ -179,7 +177,6 @@ public partial class PlayerMovement : MonoBehaviour
         else if (!wantToCrouch || !groundChecker.IsGrounded)
         {
             CeilingCheck();
-            Debug.Log($"hasACeiling: {hasACeiling}");
             if (!hasACeiling)
             {
                 ActivateColliders(defaultCollider);
@@ -194,6 +191,7 @@ public partial class PlayerMovement : MonoBehaviour
         Vector3 size = Vector3.one * 0.5f;
         Collider[] hit = Physics.OverlapBox(center, size, Quaternion.identity, groundChecker.GroundLayer);
         hasACeiling = hit.Length > 0;
+        Debug.Log($"hasACeiling: {hasACeiling}");
     }
 
     private void ActivateColliders(CapsuleCollider newCollider)

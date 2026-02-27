@@ -3,8 +3,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [CreateAssetMenu(fileName = "PlayerControls", menuName = "Player/Controls")]
-public class PlayerControls : ScriptableObject, PlayerInputAction.IPlayerActions
+public class PlayerControls : ScriptableObject, PlayerInputAction.IPlayerActions, PlayerInputAction.IUIActions
 {
+   public event Action<bool> Escape; 
+   
    public event Action<Vector2> Zoom;
    public event Action<Vector2> Move = delegate { };
    public event Action<bool> Jump = delegate { };
@@ -35,6 +37,18 @@ public class PlayerControls : ScriptableObject, PlayerInputAction.IPlayerActions
       DisablePlayerActions();
    }
 
+   public void EnabledPlayerActionsMap()
+   {
+      inputActions.Player.Enable();
+      inputActions.UI.Disable();
+   }
+
+   public void EnableUiActionsMap()
+   {
+      inputActions.UI.Enable();
+      inputActions.Player.Disable();
+   }
+   
    public void DisablePlayerActions()
    {
       inputActions.Disable();
@@ -99,5 +113,10 @@ public class PlayerControls : ScriptableObject, PlayerInputAction.IPlayerActions
    public void OnZoom(InputAction.CallbackContext context)
    {
       Zoom?.Invoke(context.ReadValue<Vector2>());
+   }
+
+   public void OnEscape(InputAction.CallbackContext context)
+   {
+      Escape?.Invoke(context.performed);
    }
 }

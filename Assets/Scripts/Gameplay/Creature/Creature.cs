@@ -39,9 +39,11 @@ public class Creature
         {
             StopTalking();
             PlayerController.Instance.FreezePlayer(false);
+            PlayerController.Instance.PlayerControls.EnableUiActionsMap();
             return;
         }
         PlayerController.Instance.FreezePlayer(true);
+        PlayerController.Instance.PlayerControls.EnabledPlayerActionsMap();
         currentCodex = codex;
         using (ListPool<CreatureQuestionData>.Get(out var validCreatureQuestionDatas))
         {
