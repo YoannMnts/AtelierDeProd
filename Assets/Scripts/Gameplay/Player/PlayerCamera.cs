@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour
@@ -12,11 +13,17 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField]
     private float maxZoom;
     
+    [SerializeField]
+    private CinemachinePositionComposer positionComposer;
+    
     private float velocity;
     private float smoothTime;
     
-    [SerializeField]
-    private Camera cam;
+
+    private void OnValidate()
+    {
+        positionComposer.CameraDistance = minZoom;
+    }
 
     private void OnEnable()
     {
@@ -27,23 +34,10 @@ public class PlayerCamera : MonoBehaviour
     {
         PlayerController.Instance.PlayerControls.Zoom -= HandleZoom;
     }
-    
-
-    private void Update()
-    {
-        UpdateCamera();
-    }
 
     private void HandleZoom(Vector2 vector2)
     {
-        var newZoomX = Mathf.Clamp(cam.sensorSize.x - vector2.x, minZoom, maxZoom);
-        var newZoomY = Mathf.Clamp(cam.sensorSize.y - vector2.y, minZoom, maxZoom);
-        var newVector = new Vector2(newZoomX, newZoomY);
-        cam.sensorSize = newVector;
-    }
-
-    public void UpdateCamera()
-    {
-        gameObject.transform.position = PlayerController.Instance.gameObject.transform.position;
+        var zoom = Mathf.Clamp(positionComposer.CameraDistance - vector2.y, minZoom, maxZoom);
+        positionComposer.CameraDistance = zoom;
     }
 }
