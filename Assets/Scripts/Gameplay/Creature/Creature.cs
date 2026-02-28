@@ -38,12 +38,10 @@ public class Creature
         if (IsAlreadyTalking)
         {
             StopTalking();
-            PlayerController.Instance.FreezePlayer(false);
-            PlayerController.Instance.PlayerControls.EnableUiActionsMap();
             return;
         }
         PlayerController.Instance.FreezePlayer(true);
-        PlayerController.Instance.PlayerControls.EnabledPlayerActionsMap();
+        PlayerController.Instance.PlayerControls.SwitchToUI(true);
         currentCodex = codex;
         using (ListPool<CreatureQuestionData>.Get(out var validCreatureQuestionDatas))
         {
@@ -66,9 +64,16 @@ public class Creature
     }
 
 
+    public void EarlyStopTalking()
+    {
+        StopTalking();
+    }
+
     public void StopTalking(float waitTime = 0)
     {
         IsAlreadyTalking = false;
+        PlayerController.Instance.FreezePlayer(false);
+        PlayerController.Instance.PlayerControls.SwitchToUI(false);
         OnStopTalk?.Invoke(this, currentCodex);
         _ = StartCreatureCooldown(waitTime);
     }

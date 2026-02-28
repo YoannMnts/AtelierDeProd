@@ -3,10 +3,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [CreateAssetMenu(fileName = "PlayerControls", menuName = "Player/Controls")]
-public class PlayerControls : ScriptableObject, PlayerInputAction.IPlayerActions, PlayerInputAction.IUIActions
+public class PlayerControls : ScriptableObject, PlayerInputAction.IPlayerActions
 {
-   public event Action<bool> Escape; 
-   
+   public event Action Escape;
    public event Action<Vector2> Zoom;
    public event Action<Vector2> Move = delegate { };
    public event Action<bool> Jump = delegate { };
@@ -37,16 +36,32 @@ public class PlayerControls : ScriptableObject, PlayerInputAction.IPlayerActions
       DisablePlayerActions();
    }
 
-   public void EnabledPlayerActionsMap()
+   public void SwitchToUI(bool isTrue)
    {
-      inputActions.Player.Enable();
-      inputActions.UI.Disable();
-   }
-
-   public void EnableUiActionsMap()
-   {
-      inputActions.UI.Enable();
-      inputActions.Player.Disable();
+      var inputActionsPlayer = inputActions.Player;
+      switch (isTrue)
+      {
+         case true:
+            inputActionsPlayer.Escape.Enable();
+            inputActionsPlayer.Zoom.Enable();
+         
+            inputActionsPlayer.Codex.Disable();
+            inputActionsPlayer.Interact.Disable();
+            inputActionsPlayer.Crouch.Disable();
+            inputActionsPlayer.Jump.Disable();
+            inputActionsPlayer.Move.Disable();
+            break;
+         default:
+            inputActionsPlayer.Escape.Disable();
+         
+            inputActionsPlayer.Zoom.Enable();
+            inputActionsPlayer.Codex.Enable();
+            inputActionsPlayer.Interact.Enable();
+            inputActionsPlayer.Crouch.Enable();
+            inputActionsPlayer.Jump.Enable();
+            inputActionsPlayer.Move.Enable();
+            break;
+      }
    }
    
    public void DisablePlayerActions()
@@ -117,6 +132,8 @@ public class PlayerControls : ScriptableObject, PlayerInputAction.IPlayerActions
 
    public void OnEscape(InputAction.CallbackContext context)
    {
-      Escape?.Invoke(context.performed);
+      Debug.Log("Escape");
+      if (context.performed)
+         Escape?.Invoke();
    }
 }

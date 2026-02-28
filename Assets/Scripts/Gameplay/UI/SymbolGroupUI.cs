@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Ozkaal.Core;
 using UnityEngine;
 
@@ -36,11 +37,21 @@ public class SymbolGroupUI : MonoBehaviour
         HideCanvas();
     }
 
+    private void OnEnable()
+    {
+        PlayerController.Instance.PlayerControls.Escape += EarlyDisconnect;
+    }
+
+    private void OnDisable()
+    {
+        PlayerController.Instance.PlayerControls.Escape -= EarlyDisconnect;
+    }
+
     public void Connect(Codex codex, WorldSymbolGroup group)
     {
         if (CurrentCodex != null)
         {
-            Disconnect(CurrentCodex, CurrentGroup);
+            Disconnect(CurrentCodex);
         }
 
         ShowCanvas();
@@ -56,6 +67,7 @@ public class SymbolGroupUI : MonoBehaviour
                 symbols[symbolData.SymbolID] = instance;
             }
         }
+        PlayerController.Instance.PlayerControls.SwitchToUI(true);
     }
 
     private void ShowCanvas()
@@ -66,7 +78,15 @@ public class SymbolGroupUI : MonoBehaviour
     }
 
 
-    public void Disconnect(Codex codex, WorldSymbolGroup group)
+    private void EarlyDisconnect()
+    {
+        if (CurrentCodex is null)
+        {
+            return;
+        }
+        Disconnect(CurrentCodex);
+    }
+    public void Disconnect(Codex codex)
     {
         if (CurrentCodex != codex)
         {
@@ -84,6 +104,7 @@ public class SymbolGroupUI : MonoBehaviour
             Destroy(t.gameObject);
         }
         HideCanvas();
+        PlayerController.Instance.PlayerControls.SwitchToUI(false);
     }
 
     private void HideCanvas()
