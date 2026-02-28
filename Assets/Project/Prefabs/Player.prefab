@@ -415,6 +415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edeb5f3834d947af92995180d8d0b894, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ozkaal.Gameplay.Gameplay.Player.GroundChecker
+  groundRadius: 0.25
   groundDistance: 0.51
   groundLayer:
     serializedVersion: 2
