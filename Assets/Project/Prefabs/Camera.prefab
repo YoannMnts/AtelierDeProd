@@ -326,4 +326,10 @@ MonoBehaviour:
   zoomSpeed: 0.2
   minZoom: 10
   maxZoom: 30
+  wallLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  wallMaterial: {fileID: 2100000, guid: 2319cf4e173580844a1f3124a51a4b4a, type: 2}
+  seeTroughDistance: 1000
   positionComposer: {fileID: 378147169359730465}
+  cam: {fileID: 4883130222177467394}

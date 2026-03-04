@@ -37,10 +37,6 @@ public class PlayerCamera : MonoBehaviour
     private int posID = Shader.PropertyToID("_Position");
     private int sizeID = Shader.PropertyToID("Size");
     
-    private void OnValidate()
-    {
-        positionComposer.CameraDistance = minZoom;
-    }
 
     private void OnDrawGizmos()
     {

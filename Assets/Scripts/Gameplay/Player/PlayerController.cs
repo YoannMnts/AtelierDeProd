@@ -1,3 +1,4 @@
+using DefaultNamespace;
 using UnityEngine;
 
 [DefaultExecutionOrder(-5)]
@@ -13,6 +14,9 @@ public class PlayerController : MonoBehaviour
     public PlayerControls PlayerControls { get; private set; }
     [field : SerializeField]
     public PlayerInteraction PlayerInteraction { get; private set; }
+    
+    [field : SerializeField]
+    public PlayerAnimation PlayerAnimation { get; private set; }
     public Codex Codex { get; private set; }
     
     public IPlayerComponent[] PlayerComponents { get; private set; }

@@ -4,6 +4,10 @@ using UnityEngine;
 
 public partial class PlayerMovement : MonoBehaviour
 {
+
+    
+
+    #region REFERENCES
     /* ───────────────────────── REFERENCES ───────────────────────── */
 
     [Header("References")]
@@ -16,11 +20,15 @@ public partial class PlayerMovement : MonoBehaviour
 
     [Tooltip("Input wrapper that provides input.")]
     [SerializeField] private PlayerControls input;
+    #endregion
 
-    // A ENLEVER ASBOLUMENT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    [SerializeField] private Material crouchMaterial;
-    [SerializeField] private Material defaultMaterial;
-    [SerializeField] private MeshRenderer crouchRenderer;
+
+    public event Action<bool> OnCrouching;
+    public event Action OnJumping;
+    public event Action<float> OnMoving;
+
+    
+    #region MOVEMENT SETTINGS
 
     /* ───────────────────────── MOVEMENT SETTINGS ───────────────────────── */
 
@@ -34,8 +42,10 @@ public partial class PlayerMovement : MonoBehaviour
 
     [Tooltip("Smoothing time used to interpolate movement speed (for animation blending).")]
     [SerializeField] private float smoothTime = 0.2f;
+    #endregion
 
 
+    #region JUMP SETTINGS
     /* ───────────────────────── JUMP SETTINGS ───────────────────────── */
 
     [Header("Jump Settings")]
@@ -51,8 +61,9 @@ public partial class PlayerMovement : MonoBehaviour
 
     [Tooltip("Multiplier applied to gravity when the player is falling.")]
     [SerializeField] private float gravityMultiplier = 1f;
-
+    #endregion
         
+    #region Colliders
     /* ───────────────────────── Colliders ───────────────────────── */
 
     [Header("Colliders references")] 
@@ -62,8 +73,9 @@ public partial class PlayerMovement : MonoBehaviour
         
     [Tooltip("Crouch collider used when the player is in crouch movement state.")]
     [SerializeField] private CapsuleCollider crouchCollider;
-
+    #endregion
         
+    #region INTERNAL STATE
     /* ───────────────────────── INTERNAL STATE ───────────────────────── */
 
     private const float ZERO_F = 0f;
@@ -98,7 +110,9 @@ public partial class PlayerMovement : MonoBehaviour
     private CapsuleCollider currentCollider;
         
     private bool hasACeiling;
-
+    #endregion
+    
+    #region UNITY LIFECYCLE
     /* ───────────────────────── UNITY LIFECYCLE ───────────────────────── */
 
     private void Awake()
@@ -118,7 +132,8 @@ public partial class PlayerMovement : MonoBehaviour
         // When the jump timer ends, automatically start the cooldown timer
         jumpTimer.OnTimerStop += () => jumpCountdownTimer.Start();
     }
-
+    #endregion
+    
     private void Start()
     {
         currentCollider = defaultCollider;
@@ -157,6 +172,7 @@ public partial class PlayerMovement : MonoBehaviour
             jumpTimer.Start();
             currentGravity = -jumpGravity; // on stocke
             jumpVelocity = initialVelocity;
+            OnJumping?.Invoke();
         }
         // Optional early jump cancel
         else if (!performed && jumpTimer.IsRunning)
@@ -171,7 +187,7 @@ public partial class PlayerMovement : MonoBehaviour
         if (wantToCrouch && groundChecker.IsGrounded)
         {
             ActivateColliders(crouchCollider);
-            crouchRenderer.material = crouchMaterial;
+            OnCrouching?.Invoke(true);
                 
         }
         else if (!wantToCrouch || !groundChecker.IsGrounded)
@@ -180,7 +196,7 @@ public partial class PlayerMovement : MonoBehaviour
             if (!hasACeiling)
             {
                 ActivateColliders(defaultCollider);
-                crouchRenderer.material = defaultMaterial;
+                OnCrouching?.Invoke(false);
             }
         }
     }
@@ -191,7 +207,6 @@ public partial class PlayerMovement : MonoBehaviour
         Vector3 size = Vector3.one * 0.5f;
         Collider[] hit = Physics.OverlapBox(center, size, Quaternion.identity, groundChecker.GroundLayer);
         hasACeiling = hit.Length > 0;
-        Debug.Log($"hasACeiling: {hasACeiling}");
     }
 
     private void ActivateColliders(CapsuleCollider newCollider)
@@ -230,7 +245,6 @@ public partial class PlayerMovement : MonoBehaviour
         if (!hasACeiling)
         {
             ActivateColliders(defaultCollider);
-            crouchRenderer.material = defaultMaterial;
         }
     }
 
@@ -311,6 +325,7 @@ public partial class PlayerMovement : MonoBehaviour
         // Apply horizontal velocity
         Vector3 applyVelocity = adjustedDirection * (moveSpeed * Time.fixedDeltaTime);
         rb.linearVelocity = applyVelocity;
+        OnMoving?.Invoke(moveSpeed);
     }
 
     private void HandleRotation(Vector3 adjustedDirection)

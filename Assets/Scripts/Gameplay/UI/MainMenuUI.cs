@@ -5,8 +5,15 @@ using UnityEngine.UI;
 
 namespace DefaultNamespace
 {
+    [DefaultExecutionOrder(-2)]
     public class MainMenuUI : MonoBehaviour
     {
+        public static MainMenuUI Instance;
+        
+        [SerializeField]
+        private CanvasGroup buttonCanvasGroup;
+        
+        
         [SerializeField]
         private Button startButton;
         [SerializeField]
@@ -15,6 +22,15 @@ namespace DefaultNamespace
         private Button creditsButton;
         [SerializeField]
         private Button quitButton;
+
+        public event Action OnStartGame;
+        
+        private void Awake()
+        {
+            if (Instance != null)
+                Destroy(gameObject);
+            Instance = this;
+        }
 
         public void OnEnable()
         {
@@ -49,7 +65,27 @@ namespace DefaultNamespace
 
         private void OnStartButtonClicked()
         {
-            SceneManager.LoadScene(1);
+            Hide(buttonCanvasGroup);
+            OnStartGame?.Invoke();
+        }
+
+        public void ReturnToMainMenu()
+        {
+            Show(buttonCanvasGroup);
+        }
+        
+        public void Show(CanvasGroup canvasGroup)
+        {
+            canvasGroup.alpha = 1;
+            canvasGroup.blocksRaycasts = true;
+            canvasGroup.interactable = true;
+        }
+
+        public void Hide(CanvasGroup canvasGroup)
+        {
+            canvasGroup.alpha = 0;
+            canvasGroup.blocksRaycasts = false;
+            canvasGroup.interactable = false;
         }
     }
 }
