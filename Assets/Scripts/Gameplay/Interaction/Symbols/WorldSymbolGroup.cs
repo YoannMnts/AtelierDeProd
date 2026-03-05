@@ -1,18 +1,20 @@
-﻿using Ozkaal.Core;
+﻿using DefaultNamespace;
+using Ozkaal.Core;
 using UnityEngine;
 
 public partial class WorldSymbolGroup : MonoBehaviour, IInteractable
 {
-    public WorldSymbolGroup(SymbolData[] symbolDatas)
-    {
-        SymbolDatas = symbolDatas;
-    }
+    int IInteractable.Priority => 2;
         
+    [SerializeField]
+    private InteractableOutline outline;
+
     [field: SerializeField]
     public SymbolData[] SymbolDatas {get; private set;}
 
     private bool temp;
-    public void Interact(PlayerInteraction playerInteraction)
+
+    void IInteractable.Interact(PlayerInteraction playerInteraction)
     {
         temp = !temp;
         if (temp)
@@ -32,6 +34,17 @@ public partial class WorldSymbolGroup : MonoBehaviour, IInteractable
             playerInteraction.PlayerController.Codex.DiscoverSymbol(SymbolDatas[i].SymbolID);
             Debug.Log($"Data : {SymbolDatas[i]},IsDiscovered: {playerInteraction.PlayerController.Codex.IsSymbolDiscovered(SymbolDatas[i].SymbolID)}");
         }
+    }
+
+    
+    void IInteractable.OnEnter(PlayerInteraction playerInteraction)
+    {
+        outline.Show();
+    }
+    
+    void IInteractable.OnExit(PlayerInteraction playerInteraction)
+    {
+        outline.Hide();
     }
 
 }

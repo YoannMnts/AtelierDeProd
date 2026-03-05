@@ -318,7 +318,7 @@ public partial class PlayerMovement : MonoBehaviour
         {
             SmoothSpeed(adjustedMovement.magnitude);
             HandleRotation(adjustedMovement);
-            HandleHorizontalMovement(adjustedMovement, isAccelerating);
+            HandleHorizontalMovement(isAccelerating);
         }
         else
         {
@@ -327,7 +327,7 @@ public partial class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void HandleHorizontalMovement(Vector3 adjustedVector ,bool isAccelerate)
+    private void HandleHorizontalMovement(bool isAccelerate)
     {
         // Apply horizontal velocity
         applySpeed = isAccelerate ? acceleration : -deceleration;

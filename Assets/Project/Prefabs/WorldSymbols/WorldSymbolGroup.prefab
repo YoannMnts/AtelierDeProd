@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7681874559005843509}
   - component: {fileID: 5414526237630972012}
   - component: {fileID: 88030727175925464}
+  - component: {fileID: 7274826177006237438}
   m_Layer: 0
   m_Name: WorldSymbolGroup
   m_TagString: Untagged
@@ -45,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16c73f490863446592ee6c42674b9a28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ADP.Gameplay::ADP.Gameplay.Gameplay.Interaction.Symbols.WorldSymbolGroup
+  outline: {fileID: 7274826177006237438}
   <SymbolDatas>k__BackingField: []
 --- !u!135 &88030727175925464
 SphereCollider:
@@ -67,3 +69,18 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7274826177006237438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6046659437979242426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae0c806db0964744afbd8cd8406bc878, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ozkaal.Gameplay::DefaultNamespace.InteractableOutline
+  meshRenderers:
+  - {fileID: 0}
+  - {fileID: 0}
