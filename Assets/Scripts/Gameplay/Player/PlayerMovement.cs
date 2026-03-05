@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public partial class PlayerMovement : MonoBehaviour
 {
@@ -32,11 +33,16 @@ public partial class PlayerMovement : MonoBehaviour
 
     /* ───────────────────────── MOVEMENT SETTINGS ───────────────────────── */
 
+    [FormerlySerializedAs("moveSpeed")]
     [Header("Movement Settings")]
 
     [Tooltip("Horizontal movement speed applied to the player.")]
-    [SerializeField] private float moveSpeed = 10f;
-
+    [SerializeField] private float acceleration = 10f;
+    
+    [SerializeField] private float deceleration = 10f;
+    
+    [SerializeField] private float maxSpeed = 300f;
+    
     [Tooltip("Rotation speed used to rotate the player toward movement direction.")]
     [SerializeField] private float rotationSpeed = 100f;
 
@@ -82,6 +88,8 @@ public partial class PlayerMovement : MonoBehaviour
 
     // Smoothed speed value (usually for animation blending)
     private float currentSpeed;
+
+    private float applySpeed;
 
     // Velocity reference used by SmoothDamp
     private float velocity;
@@ -222,6 +230,7 @@ public partial class PlayerMovement : MonoBehaviour
     {
         // Convert 2D input into world-space movement direction
         movement = new Vector3(input.Direction.x, 0f, input.Direction.y);
+        HandleMovement();
 
         // Update all timers
         HandleTimers();
@@ -230,8 +239,7 @@ public partial class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         // Handle horizontal movement & rotation
-        HandleMovement();
-
+        ApplyMovement();
         // Handle vertical movement (jump & gravity)
         HandleCrouch();
         HandleJump();
@@ -299,47 +307,50 @@ public partial class PlayerMovement : MonoBehaviour
 
     private void HandleMovement()
     {
-        Vector3 adjustedDirection = movement;
-
-        if (adjustedDirection.magnitude > ZERO_F)
+        var adjustedMovement = movement;
+        bool isAccelerating = movement.sqrMagnitude > ZERO_F;
+        
+        if (adjustedMovement.sqrMagnitude > ZERO_F)
         {
-            HandleRotation(adjustedDirection);
-            HandleHorizontalMovement(adjustedDirection);
-            SmoothSpeed(adjustedDirection.magnitude);
+            SmoothSpeed(adjustedMovement.magnitude);
+            HandleRotation(adjustedMovement);
+            HandleHorizontalMovement(adjustedMovement, isAccelerating);
         }
         else
         {
             // Stop horizontal movement when no input
             SmoothSpeed(ZERO_F);
-
-            rb.linearVelocity = new Vector3(
-                ZERO_F,
-                rb.linearVelocity.y,
-                ZERO_F
-            );
         }
+        
     }
 
-    private void HandleHorizontalMovement(Vector3 adjustedDirection)
+    private void HandleHorizontalMovement(Vector3 adjustedVector ,bool isAccelerate)
     {
         // Apply horizontal velocity
-        Vector3 applyVelocity = adjustedDirection * (moveSpeed * Time.fixedDeltaTime);
+        applySpeed = isAccelerate ? acceleration : -deceleration;
+        applySpeed *= currentSpeed;
+        applySpeed = Mathf.Clamp(applySpeed, ZERO_F, maxSpeed);
+    }
+
+    private void ApplyMovement()
+    {
+        Vector3 applyVelocity = movement * applySpeed;
         rb.linearVelocity = applyVelocity;
-        OnMoving?.Invoke(moveSpeed);
     }
 
     private void HandleRotation(Vector3 adjustedDirection)
     {
         // Rotate the player toward movement direction
         var targetRotation = Quaternion.LookRotation(adjustedDirection);
+        targetRotation.x = transform.rotation.x;
+        targetRotation.z = transform.rotation.z;
         transform.rotation = Quaternion.RotateTowards(
             transform.rotation,
             targetRotation,
-            rotationSpeed * Time.deltaTime
+            rotationSpeed
         );
-
         // Ensure forward vector matches movement
-        transform.LookAt(transform.position + adjustedDirection);
+        //transform.LookAt(transform.position + adjustedDirection);
     }
 
     private void SmoothSpeed(float targetSpeed)
@@ -351,6 +362,7 @@ public partial class PlayerMovement : MonoBehaviour
             ref velocity,
             smoothTime
         );
+        OnMoving?.Invoke(currentSpeed);
     }
 
     public void FreezePlayer(bool isFreeze)
