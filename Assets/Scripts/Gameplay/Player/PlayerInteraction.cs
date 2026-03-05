@@ -6,12 +6,21 @@ public class PlayerInteraction : MonoBehaviour
     public PlayerController PlayerController => PlayerController.Instance;
         
     public IInteractable CurrentInteractable { get; private set; }
-        
+    
+    private Collider[] buffer = new Collider[16];
+    
     public event Action PlayerInteract;
         
     [Header("Interact")]
     [SerializeField] private float interactRange;
 
+    private int size;
+
+    private void FixedUpdate()
+    {
+        size = Physics.OverlapSphereNonAlloc(transform.position, interactRange, buffer);
+    }
+    
     private void OnEnable()
     {
         PlayerController.PlayerControls.Interact += TryInteract;
@@ -24,15 +33,14 @@ public class PlayerInteraction : MonoBehaviour
 
     private void TryInteract()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, interactRange);
-        foreach (var collider in colliders)
+        for (int i = 0; i < size; i++)
         {
-            if (collider.TryGetComponent(out IInteractable interactable))
-            {
-                CurrentInteractable = interactable;
-                interactable.Interact(this);
-                PlayerInteract?.Invoke();
-            }
+            if (!buffer[i].TryGetComponent(out IInteractable interactable)) continue;
+            CurrentInteractable = interactable;
+            interactable.Interact(this);
+            PlayerInteract?.Invoke();
         }
+        
+        
     }
 }

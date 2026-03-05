@@ -118,6 +118,8 @@ public partial class PlayerMovement : MonoBehaviour
     private CapsuleCollider currentCollider;
         
     private bool hasACeiling;
+    private Vector3 lastGroundVelocity;
+
     #endregion
     
     #region UNITY LIFECYCLE
@@ -230,6 +232,8 @@ public partial class PlayerMovement : MonoBehaviour
     {
         // Convert 2D input into world-space movement direction
         movement = new Vector3(input.Direction.x, 0f, input.Direction.y);
+        if (movement.sqrMagnitude < 0.1)
+            movement = lastGroundVelocity.normalized;
         HandleMovement();
 
         // Update all timers
@@ -321,7 +325,6 @@ public partial class PlayerMovement : MonoBehaviour
             // Stop horizontal movement when no input
             SmoothSpeed(ZERO_F);
         }
-        
     }
 
     private void HandleHorizontalMovement(Vector3 adjustedVector ,bool isAccelerate)
@@ -334,8 +337,13 @@ public partial class PlayerMovement : MonoBehaviour
 
     private void ApplyMovement()
     {
-        Vector3 applyVelocity = movement * applySpeed;
-        rb.linearVelocity = applyVelocity;
+        var groundNormal = groundChecker.IsGrounded ? groundChecker.GroundNormal : Vector3.up;
+        Vector3 groundMovement = Vector3.ProjectOnPlane(movement,groundNormal).normalized;
+        
+        Vector3 applyVelocity = groundMovement * applySpeed;
+        lastGroundVelocity = applyVelocity;
+        
+        rb.linearVelocity = jumpVelocity * Vector3.up + applyVelocity;
     }
 
     private void HandleRotation(Vector3 adjustedDirection)
@@ -349,8 +357,6 @@ public partial class PlayerMovement : MonoBehaviour
             targetRotation,
             rotationSpeed
         );
-        // Ensure forward vector matches movement
-        //transform.LookAt(transform.position + adjustedDirection);
     }
 
     private void SmoothSpeed(float targetSpeed)

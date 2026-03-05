@@ -44,8 +44,8 @@ public class PlayerControls : ScriptableObject, PlayerInputAction.IPlayerActions
          case true:
             inputActionsPlayer.Escape.Enable();
             inputActionsPlayer.Zoom.Enable();
+            inputActionsPlayer.Codex.Enable();
          
-            inputActionsPlayer.Codex.Disable();
             inputActionsPlayer.Interact.Disable();
             inputActionsPlayer.Crouch.Disable();
             inputActionsPlayer.Jump.Disable();

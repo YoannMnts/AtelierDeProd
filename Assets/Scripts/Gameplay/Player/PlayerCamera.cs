@@ -34,8 +34,8 @@ public class PlayerCamera : MonoBehaviour
     private float velocity;
     private float smoothTime;
     
-    private int posID = Shader.PropertyToID("_Position");
-    private int sizeID = Shader.PropertyToID("Size");
+    private static int posID = Shader.PropertyToID("_Position");
+    private static int sizeID = Shader.PropertyToID("Size");
     
 
     private void OnDrawGizmos()
