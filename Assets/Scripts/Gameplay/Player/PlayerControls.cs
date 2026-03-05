@@ -17,6 +17,8 @@ public class PlayerControls : ScriptableObject, PlayerInputAction.IPlayerActions
    PlayerInputAction inputActions;
        
    bool isCodexActive;
+
+   public bool IsInUi { get; private set; }
        
    public Vector3 Direction => inputActions.Player.Move.ReadValue<Vector2>();
 
@@ -38,20 +40,21 @@ public class PlayerControls : ScriptableObject, PlayerInputAction.IPlayerActions
 
    public void SwitchToUI(bool isTrue)
    {
+      IsInUi = isTrue;
       var inputActionsPlayer = inputActions.Player;
       switch (isTrue)
       {
          case true:
             inputActionsPlayer.Escape.Enable();
-            inputActionsPlayer.Zoom.Enable();
             inputActionsPlayer.Codex.Enable();
          
+            inputActionsPlayer.Zoom.Disable();
             inputActionsPlayer.Interact.Disable();
             inputActionsPlayer.Crouch.Disable();
             inputActionsPlayer.Jump.Disable();
             inputActionsPlayer.Move.Disable();
             break;
-         default:
+         case false:
             inputActionsPlayer.Escape.Disable();
          
             inputActionsPlayer.Zoom.Enable();

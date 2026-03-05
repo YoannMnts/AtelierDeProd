@@ -10,8 +10,7 @@ public class Creature
 
     public event Action OnMaximumFriendshipReached;
     public event Action<Creature> OnCooldown;
-    public event Action<Creature> OnGainFriendship;
-    public event Action<Creature> OnLossFriendship;
+    public event Action<int> OnGainOrLossFriendship;
     public event Action<Creature, Codex> OnTalk;
     public event Action<Creature, Codex> OnStopTalk;
         
@@ -91,10 +90,7 @@ public class Creature
             
         if (currentFriendshipAmount >= 10)
             OnMaximumFriendshipReached?.Invoke();
-                
-        if (amount > 0)
-            OnGainFriendship?.Invoke(this);
-        else
-            OnLossFriendship?.Invoke(this);
+        
+        OnGainOrLossFriendship?.Invoke(amount);
     }
 }

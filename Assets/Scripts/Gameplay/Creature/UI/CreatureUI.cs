@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using DefaultNamespace;
 using Ozkaal.Core;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.UI;
 
 public class CreatureUI : MonoBehaviour
 {
@@ -21,6 +23,12 @@ public class CreatureUI : MonoBehaviour
         
     [SerializeField]
     private SymbolUI symbolPrefab;
+    
+    [SerializeField]
+    private Image fillImage;
+    
+    [SerializeField]
+    private CanvasGroup fillCanvasGroup;
         
     private Dictionary<string, SymbolUI> symbols;
 
@@ -36,6 +44,10 @@ public class CreatureUI : MonoBehaviour
         {
             Destroy(t.gameObject);
         }
+        fillImage.fillAmount = 0;
+        fillCanvasGroup.alpha = 0;
+        fillCanvasGroup.interactable = false;
+        fillCanvasGroup.blocksRaycasts = false;
     }
 
     private void OnEnable()
@@ -61,12 +73,16 @@ public class CreatureUI : MonoBehaviour
         Debug.Log($"Connecting to creature");
         creature.OnTalk += OnCreatureTalk;
         creature.OnStopTalk += OnCreatureStopTalk;
+        creature.OnGainOrLossFriendship += AddOrRemoveFillImage;
+        PlayerController.Instance.PlayerControls.Escape += creature.EarlyStopTalking;
     }
 
     private void Disconnect(Creature creature)
     {
         creature.OnTalk -= OnCreatureTalk;
         creature.OnStopTalk -= OnCreatureStopTalk;
+        creature.OnGainOrLossFriendship -= AddOrRemoveFillImage;
+        PlayerController.Instance.PlayerControls.Escape -= creature.EarlyStopTalking;
     }
 
     private void OnCreatureTalk(Creature creature,Codex codex)
@@ -110,6 +126,9 @@ public class CreatureUI : MonoBehaviour
                 }
             }
         }
+        fillCanvasGroup.alpha = 1;
+        fillCanvasGroup.interactable = true;
+        fillCanvasGroup.blocksRaycasts = true;
     }
 
     private static void GetValidRandomIndex(int lenght, List<int> validIndex)
@@ -143,5 +162,16 @@ public class CreatureUI : MonoBehaviour
         {
             Destroy(t.gameObject);
         }
+        fillCanvasGroup.alpha = 0;
+        fillCanvasGroup.interactable = false;
+        fillCanvasGroup.blocksRaycasts = false;
+    }
+
+    private void AddOrRemoveFillImage(int amount)
+    {
+        Debug.Log($"Adding amount {amount}");
+        float fillAmount = amount / 11f;
+        Debug.Log($"Adding fill amount {fillAmount}");
+        fillImage.fillAmount = Mathf.Clamp01(fillImage.fillAmount + fillAmount);
     }
 }

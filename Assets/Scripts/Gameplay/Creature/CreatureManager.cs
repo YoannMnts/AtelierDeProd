@@ -15,7 +15,6 @@ public static class CreatureManager
     {
         var creature = new Creature();
         creatures.Add(creature);
-        PlayerController.Instance.PlayerControls.Escape += creature.EarlyStopTalking;
         OnCreatureCreated?.Invoke(creature);
         return creature;
     }
@@ -24,7 +23,6 @@ public static class CreatureManager
     {
         if (creatures.Remove(creature))
         {
-            PlayerController.Instance.PlayerControls.Escape -= creature.EarlyStopTalking;
             OnCreatureDestroyed?.Invoke(creature);
             return true;
         }

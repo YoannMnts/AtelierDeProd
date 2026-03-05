@@ -1,4 +1,5 @@
-﻿using Ozkaal.Core;
+﻿using System;
+using Ozkaal.Core;
 using UnityEngine;
 
 //Make for POC :
@@ -13,6 +14,7 @@ public class CodexUI : MonoBehaviour
     private CanvasGroup canvasGroup;
 
     private Codex currentCodex;
+    private bool wasInUi;
 
     private void OnEnable()
     {
@@ -32,8 +34,12 @@ public class CodexUI : MonoBehaviour
         {
             Destroy(t.gameObject);
         }
+        canvasGroup.alpha = 0;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
     }
-    public void Connect(Codex codex)
+
+    private void Connect(Codex codex)
     {
         Debug.Log($"Connecting to {codex}");
         if (currentCodex != null)
@@ -41,6 +47,8 @@ public class CodexUI : MonoBehaviour
             Disconnect(currentCodex);
         }
         currentCodex = codex;
+        wasInUi = PlayerController.Instance.PlayerControls.IsInUi;
+        PlayerController.Instance.PlayerControls.SwitchToUI(true);
         var entries = Resources.LoadAll<SymbolData>("ScriptableObject/CodexEntries");
         for (int i = 0; i < entries.Length; i++)
         {
@@ -56,7 +64,7 @@ public class CodexUI : MonoBehaviour
         canvasGroup.blocksRaycasts = true;
     }
 
-    public void Disconnect(Codex codex)
+    private void Disconnect(Codex codex = null)
     {
         if (currentCodex != codex)
         {
@@ -69,5 +77,7 @@ public class CodexUI : MonoBehaviour
         canvasGroup.alpha = 0;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
+        if (!wasInUi)
+            PlayerController.Instance.PlayerControls.SwitchToUI(false);
     }
 }

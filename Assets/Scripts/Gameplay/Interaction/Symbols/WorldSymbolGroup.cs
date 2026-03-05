@@ -16,19 +16,9 @@ public partial class WorldSymbolGroup : MonoBehaviour, IInteractable
 
     void IInteractable.Interact(PlayerInteraction playerInteraction)
     {
-        temp = !temp;
-        if (temp)
-        {
-            SymbolGroupUI.Main.Connect(playerInteraction.PlayerController.Codex, this);
-            PlayerController.Instance.FreezePlayer(true);
-            PlayerController.Instance.PlayerControls.SwitchToUI(true);
-        }
-        else
-        {
-            SymbolGroupUI.Main.Disconnect(playerInteraction.PlayerController.Codex);
-            PlayerController.Instance.FreezePlayer(false);
-            PlayerController.Instance.PlayerControls.SwitchToUI(false);
-        }
+        SymbolGroupUI.Main.Connect(playerInteraction.PlayerController.Codex, this);
+        PlayerController.Instance.FreezePlayer(true);
+        PlayerController.Instance.PlayerControls.SwitchToUI(true);
         for (int i = 0; i < SymbolDatas.Length; i++)
         {
             playerInteraction.PlayerController.Codex.DiscoverSymbol(SymbolDatas[i].SymbolID);

@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 3782161591659970164}
   serializedVersion: 2
   m_LocalRotation: {x: 0.08715578, y: 0, z: 0, w: 0.9961947}
-  m_LocalPosition: {x: 0.00000020861626, y: 1.7364824, z: -9.848077}
+  m_LocalPosition: {x: -3.1399999, y: 3.1164827, z: -11.328077}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -197,7 +197,7 @@ Transform:
   m_GameObject: {fileID: 8595785351199784566}
   serializedVersion: 2
   m_LocalRotation: {x: 0.08715578, y: 0, z: 0, w: 0.9961947}
-  m_LocalPosition: {x: 0.00000020861626, y: 1.7364824, z: -9.848077}
+  m_LocalPosition: {x: -3.1399999, y: 3.1164827, z: -11.328077}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -329,7 +329,7 @@ MonoBehaviour:
   wallLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  wallMaterial: {fileID: 2100000, guid: 2319cf4e173580844a1f3124a51a4b4a, type: 2}
+  wallMaterial: {fileID: -876546973899608171, guid: b3cd099a77006884a8c1dcf0556d0fe4, type: 3}
   seeTroughDistance: 1000
   positionComposer: {fileID: 378147169359730465}
   cam: {fileID: 4883130222177467394}
