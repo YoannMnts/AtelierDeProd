@@ -7,9 +7,6 @@ using UnityEngine.Pool;
 public class PlayerInteraction : MonoBehaviour
 {
     public PlayerController PlayerController => PlayerController.Instance;
-        
-    [field: SerializeField]
-    public Material OutlineMaterial { get; private set; }
     public IInteractable CurrentInteractable { get; private set; }
     
     private Collider[] buffer = new Collider[16];

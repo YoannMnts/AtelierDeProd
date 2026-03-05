@@ -119,6 +119,7 @@ public partial class PlayerMovement : MonoBehaviour
         
     private bool hasACeiling;
     private Vector3 lastGroundVelocity;
+    private bool isAccelerating;
 
     #endregion
     
@@ -232,8 +233,7 @@ public partial class PlayerMovement : MonoBehaviour
     {
         // Convert 2D input into world-space movement direction
         movement = new Vector3(input.Direction.x, 0f, input.Direction.y);
-        if (movement.sqrMagnitude < 0.1)
-            movement = lastGroundVelocity.normalized;
+        
         HandleMovement();
 
         // Update all timers
@@ -296,14 +296,6 @@ public partial class PlayerMovement : MonoBehaviour
             jumpVelocity += currentGravity * Time.fixedDeltaTime;
             jumpVelocity = Mathf.Clamp(jumpVelocity, -initialVelocity, initialVelocity);
         }
-            
-            
-        // Apply final vertical velocity to Rigidbody
-        rb.linearVelocity = new Vector3(
-            rb.linearVelocity.x,
-            jumpVelocity,
-            rb.linearVelocity.z
-        );
     }
 
 
@@ -312,33 +304,25 @@ public partial class PlayerMovement : MonoBehaviour
     private void HandleMovement()
     {
         var adjustedMovement = movement;
-        bool isAccelerating = movement.sqrMagnitude > ZERO_F;
-        
-        if (adjustedMovement.sqrMagnitude > ZERO_F)
-        {
-            SmoothSpeed(adjustedMovement.magnitude);
-            HandleRotation(adjustedMovement);
-            HandleHorizontalMovement(isAccelerating);
-        }
-        else
-        {
-            // Stop horizontal movement when no input
-            SmoothSpeed(ZERO_F);
-        }
+        isAccelerating = adjustedMovement.sqrMagnitude > ZERO_F;
+        SmoothSpeed(adjustedMovement.magnitude);
+        HandleRotation(adjustedMovement);
+        HandleHorizontalMovement();
     }
 
-    private void HandleHorizontalMovement(bool isAccelerate)
+    private void HandleHorizontalMovement()
     {
         // Apply horizontal velocity
-        applySpeed = isAccelerate ? acceleration : -deceleration;
+        applySpeed = isAccelerating ? acceleration : -deceleration;
         applySpeed *= currentSpeed;
-        applySpeed = Mathf.Clamp(applySpeed, ZERO_F, maxSpeed);
+        applySpeed = Mathf.Clamp(applySpeed, -maxSpeed, maxSpeed);
     }
 
     private void ApplyMovement()
     {
         var groundNormal = groundChecker.IsGrounded ? groundChecker.GroundNormal : Vector3.up;
         Vector3 groundMovement = Vector3.ProjectOnPlane(movement,groundNormal).normalized;
+        
         
         Vector3 applyVelocity = groundMovement * applySpeed;
         lastGroundVelocity = applyVelocity;
@@ -348,6 +332,8 @@ public partial class PlayerMovement : MonoBehaviour
 
     private void HandleRotation(Vector3 adjustedDirection)
     {
+        if (!isAccelerating)
+            return;
         // Rotate the player toward movement direction
         var targetRotation = Quaternion.LookRotation(adjustedDirection);
         targetRotation.x = transform.rotation.x;
@@ -368,9 +354,10 @@ public partial class PlayerMovement : MonoBehaviour
             ref velocity,
             smoothTime
         );
-        OnMoving?.Invoke(currentSpeed);
+        var animationSpeed = currentSpeed < 0.1f ? 0 : currentSpeed;
+        OnMoving?.Invoke(animationSpeed);
     }
-
+    
     public void FreezePlayer(bool isFreeze)
     {
         rb.constraints = isFreeze ? RigidbodyConstraints.FreezeAll : RigidbodyConstraints.FreezeRotation;
