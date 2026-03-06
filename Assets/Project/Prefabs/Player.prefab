@@ -221,9 +221,11 @@ MonoBehaviour:
   smoothTime: 0.2
   jumpDuration: 0.5
   jumpCooldown: 0
-  jumpMaxHeight: 1.5
+  jumpMaxHeight: 1.7
   gravityMultiplier: 1
   crouchSpeedMultiplier: 0.5
+  crouchCheckCenter: {x: 0, y: 0.5, z: 0}
+  crouchCheckHalfSize: {x: 0.3, y: 0.3, z: 0.3}
   defaultCollider: {fileID: 8462979938337248365}
   crouchCollider: {fileID: 2248928332417177028}
 --- !u!114 &3119704049733065614
