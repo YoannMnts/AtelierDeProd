@@ -86,7 +86,9 @@ public class AnswerUI : MonoBehaviour
             }
                 
             //A enlever !!!!!!!!!!
+            PlayerController.Instance.PlayerControls.SwitchToUI(false);
             PlayerController.Instance.FreezePlayer(false);
+            currentCreatureUI.ShowOrHideCanvas(true);
         }
         catch (Exception e)
         {

@@ -45,9 +45,24 @@ public class CreatureUI : MonoBehaviour
             Destroy(t.gameObject);
         }
         fillImage.fillAmount = 0;
-        fillCanvasGroup.alpha = 0;
-        fillCanvasGroup.interactable = false;
-        fillCanvasGroup.blocksRaycasts = false;
+        ShowOrHideCanvas();
+    }
+
+    public void ShowOrHideCanvas(bool show = false)
+    {
+        if (!show)
+        {
+            fillCanvasGroup.alpha = 0;
+            fillCanvasGroup.interactable = false;
+            fillCanvasGroup.blocksRaycasts = false;
+            
+        }
+        else
+        {
+            fillCanvasGroup.alpha = 1;
+            fillCanvasGroup.interactable = true;
+            fillCanvasGroup.blocksRaycasts = true;
+        }
     }
 
     private void OnEnable()
@@ -88,6 +103,7 @@ public class CreatureUI : MonoBehaviour
     private void OnCreatureTalk(Creature creature,Codex codex)
     {
         Codex = codex;
+        PlayerController.Instance.PlayerControls.SwitchToUI(true);
         for (int i = 0; i < creature.CurrentCreatureQuestion.Question.Length; i++)
         {
             SymbolUI instance = Instantiate(symbolPrefab, questionsRoot);
@@ -126,9 +142,7 @@ public class CreatureUI : MonoBehaviour
                 }
             }
         }
-        fillCanvasGroup.alpha = 1;
-        fillCanvasGroup.interactable = true;
-        fillCanvasGroup.blocksRaycasts = true;
+        ShowOrHideCanvas(true);
         Cursor.visible = true;
     }
 
@@ -163,10 +177,6 @@ public class CreatureUI : MonoBehaviour
         {
             Destroy(t.gameObject);
         }
-        fillCanvasGroup.alpha = 0;
-        fillCanvasGroup.interactable = false;
-        fillCanvasGroup.blocksRaycasts = false;
-        Cursor.visible = false;
     }
 
     private void AddOrRemoveFillImage(int amount)

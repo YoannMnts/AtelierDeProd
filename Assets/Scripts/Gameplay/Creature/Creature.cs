@@ -42,7 +42,6 @@ public class Creature
         }
         
         PlayerController.Instance.FreezePlayer(true);
-        PlayerController.Instance.PlayerControls.SwitchToUI(true);
         currentCodex = codex;
         using (ListPool<CreatureQuestionData>.Get(out var validCreatureQuestionDatas))
         {
@@ -68,13 +67,13 @@ public class Creature
     public void EarlyStopTalking()
     {
         StopTalking();
+        PlayerController.Instance.PlayerControls.SwitchToUI(false);
     }
 
     public void StopTalking(float waitTime = 0)
     {
         IsAlreadyTalking = false;
         PlayerController.Instance.FreezePlayer(false);
-        PlayerController.Instance.PlayerControls.SwitchToUI(false);
         OnStopTalk?.Invoke(this, currentCodex);
         _ = StartCreatureCooldown(waitTime);
     }
