@@ -69,6 +69,14 @@ public partial class PlayerMovement : MonoBehaviour
     [SerializeField] private float gravityMultiplier = 1f;
     #endregion
         
+    
+    /* ───────────────────────── Crouch SETTINGS ───────────────────────── */
+
+    [Header("Crouch Settings")]
+    [SerializeField, Range(0,1)] 
+    private float crouchSpeedMultiplier;
+    
+    
     #region Colliders
     /* ───────────────────────── Colliders ───────────────────────── */
 
@@ -120,6 +128,7 @@ public partial class PlayerMovement : MonoBehaviour
     private bool hasACeiling;
     private Vector3 lastGroundVelocity;
     private bool isAccelerating;
+    private bool isCrouch;
 
     #endregion
     
@@ -198,6 +207,7 @@ public partial class PlayerMovement : MonoBehaviour
         if (wantToCrouch && groundChecker.IsGrounded)
         {
             ActivateColliders(crouchCollider);
+            isCrouch = true;
             OnCrouching?.Invoke(true);
                 
         }
@@ -207,6 +217,7 @@ public partial class PlayerMovement : MonoBehaviour
             if (!hasACeiling)
             {
                 ActivateColliders(defaultCollider);
+                isCrouch = false;
                 OnCrouching?.Invoke(false);
             }
         }
@@ -233,8 +244,7 @@ public partial class PlayerMovement : MonoBehaviour
     {
         // Convert 2D input into world-space movement direction
         movement = new Vector3(input.Direction.x, 0f, input.Direction.y);
-        
-        HandleMovement();
+        HandleHorizontalMovement();
 
         // Update all timers
         HandleTimers();
@@ -242,6 +252,7 @@ public partial class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        HandleSpeedAndRotation();
         // Handle horizontal movement & rotation
         ApplyMovement();
         // Handle vertical movement (jump & gravity)
@@ -301,19 +312,20 @@ public partial class PlayerMovement : MonoBehaviour
 
     /* ───────────────────────── MOVEMENT LOGIC ───────────────────────── */
 
-    private void HandleMovement()
+    private void HandleSpeedAndRotation()
     {
         var adjustedMovement = movement;
         isAccelerating = adjustedMovement.sqrMagnitude > ZERO_F;
         SmoothSpeed(adjustedMovement.magnitude);
         HandleRotation(adjustedMovement);
-        HandleHorizontalMovement();
     }
 
     private void HandleHorizontalMovement()
     {
         // Apply horizontal velocity
         applySpeed = isAccelerating ? acceleration : -deceleration;
+        if (isCrouch)
+            applySpeed *= crouchSpeedMultiplier;
         applySpeed *= currentSpeed;
         applySpeed = Mathf.Clamp(applySpeed, -maxSpeed, maxSpeed);
     }

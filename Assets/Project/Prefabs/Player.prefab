@@ -214,15 +214,16 @@ MonoBehaviour:
   rb: {fileID: 1818867071421849474}
   groundChecker: {fileID: 3119704049733065614}
   input: {fileID: 11400000, guid: cf8e9a967b161c044b5f5f3ce788542b, type: 2}
-  acceleration: 10
+  acceleration: 6
   deceleration: 10
   maxSpeed: 10
-  rotationSpeed: 2
-  smoothTime: 0.5
+  rotationSpeed: 10
+  smoothTime: 0.2
   jumpDuration: 0.5
   jumpCooldown: 0
   jumpMaxHeight: 1.5
   gravityMultiplier: 1
+  crouchSpeedMultiplier: 0.5
   defaultCollider: {fileID: 8462979938337248365}
   crouchCollider: {fileID: 2248928332417177028}
 --- !u!114 &3119704049733065614
@@ -238,7 +239,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ozkaal.Gameplay.Gameplay.Player.GroundChecker
   groundRadius: 0.25
-  groundDistance: 0.51
+  groundDistance: 0.67
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
