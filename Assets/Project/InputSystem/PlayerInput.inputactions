@@ -128,8 +128,30 @@
                 },
                 {
                     "name": "",
+                    "id": "ed1e7335-ca0b-4e7b-b632-2ee108c9748d",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "e339b57f-5239-4f61-8216-3e426e44f6e8",
                     "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d47bd274-4510-48ca-a7c3-1cd21a242ae8",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -161,8 +183,30 @@
                 },
                 {
                     "name": "",
+                    "id": "4ed63376-83d0-4512-892c-0ddee8166d83",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "368ef837-95e4-498c-84a6-7be1b5c04e21",
                     "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Codex",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2f14ec6a-bfc9-4639-8d18-4340a18ce569",
+                    "path": "<DualShockGamepad>/touchpadButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -177,6 +221,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2633c690-1eb7-401f-8c20-144739593e85",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -205,11 +260,33 @@
                 },
                 {
                     "name": "",
+                    "id": "f50327ca-94e5-46dd-8172-66a81726d1ea",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "c2dd81da-380a-48a4-aa4b-ae18abf45f42",
                     "path": "<Mouse>/scroll",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
+                    "action": "Zoom",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0eb9d7ca-30fe-4afc-84b2-3cefbd835364",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
                     "action": "Zoom",
                     "isComposite": false,
                     "isPartOfComposite": false

@@ -59,6 +59,7 @@ public class PlayerInteraction : MonoBehaviour
             return;
         
         CurrentInteractable.Interact(this);
+        Cursor.visible = true;
         PlayerInteract?.Invoke();
     }
 }

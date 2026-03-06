@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LD_complete.unity
     guid: 8054a69ed05ba934391471771638fbf2
+  - enabled: 1
+    path: Assets/Scenes/EndScene.unity
+    guid: 90d8b549cecf0e248a29f6b3a69ab79b
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 1fffd57942a5c9d499b604a0955c0263, type: 3}
   m_UseUCBPForAssetBundles: 0

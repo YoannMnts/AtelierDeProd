@@ -62,6 +62,7 @@ public class CodexUI : MonoBehaviour
         canvasGroup.alpha = 1;
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
+        Cursor.visible = true;
     }
 
     private void Disconnect(Codex codex = null)
@@ -79,5 +80,6 @@ public class CodexUI : MonoBehaviour
         canvasGroup.blocksRaycasts = false;
         if (!wasInUi)
             PlayerController.Instance.PlayerControls.SwitchToUI(false);
+        Cursor.visible = false;
     }
 }

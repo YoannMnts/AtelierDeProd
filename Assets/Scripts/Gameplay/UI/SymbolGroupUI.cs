@@ -68,6 +68,7 @@ public class SymbolGroupUI : MonoBehaviour
             }
         }
         PlayerController.Instance.PlayerControls.SwitchToUI(true);
+        Cursor.visible = true;
     }
 
     private void ShowCanvas()
@@ -105,6 +106,7 @@ public class SymbolGroupUI : MonoBehaviour
         }
         HideCanvas();
         PlayerController.Instance.PlayerControls.SwitchToUI(false);
+        Cursor.visible = false;
     }
 
     private void HideCanvas()

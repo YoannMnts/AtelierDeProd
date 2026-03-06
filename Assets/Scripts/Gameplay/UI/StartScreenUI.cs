@@ -49,6 +49,7 @@ namespace DefaultNamespace
 
         private void PlayGame()
         {
+            Cursor.visible = false;
             SceneManager.LoadScene(1);
         }
     }

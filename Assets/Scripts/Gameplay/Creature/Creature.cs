@@ -2,6 +2,7 @@
 using Ozkaal.Core;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class Creature
@@ -39,6 +40,7 @@ public class Creature
             StopTalking();
             return;
         }
+        
         PlayerController.Instance.FreezePlayer(true);
         PlayerController.Instance.PlayerControls.SwitchToUI(true);
         currentCodex = codex;
@@ -87,9 +89,12 @@ public class Creature
     public void AddOrRemoveFriendship(int amount)
     {
         currentFriendshipAmount += amount;
-            
-        if (currentFriendshipAmount >= 10)
+
+        if (currentFriendshipAmount >= 11)
+        {
             OnMaximumFriendshipReached?.Invoke();
+            SceneManager.LoadScene(2);
+        }
         
         OnGainOrLossFriendship?.Invoke(amount);
     }

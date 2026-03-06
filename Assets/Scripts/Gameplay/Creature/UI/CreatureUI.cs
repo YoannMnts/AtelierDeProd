@@ -129,6 +129,7 @@ public class CreatureUI : MonoBehaviour
         fillCanvasGroup.alpha = 1;
         fillCanvasGroup.interactable = true;
         fillCanvasGroup.blocksRaycasts = true;
+        Cursor.visible = true;
     }
 
     private static void GetValidRandomIndex(int lenght, List<int> validIndex)
@@ -165,6 +166,7 @@ public class CreatureUI : MonoBehaviour
         fillCanvasGroup.alpha = 0;
         fillCanvasGroup.interactable = false;
         fillCanvasGroup.blocksRaycasts = false;
+        Cursor.visible = false;
     }
 
     private void AddOrRemoveFillImage(int amount)
