@@ -244,7 +244,7 @@ public partial class PlayerMovement : MonoBehaviour
     {
         // Convert 2D input into world-space movement direction
         movement = new Vector3(input.Direction.x, 0f, input.Direction.y);
-        HandleHorizontalMovement();
+        HandleMovement();
 
         // Update all timers
         HandleTimers();
@@ -252,7 +252,6 @@ public partial class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        HandleSpeedAndRotation();
         // Handle horizontal movement & rotation
         ApplyMovement();
         // Handle vertical movement (jump & gravity)
@@ -312,12 +311,13 @@ public partial class PlayerMovement : MonoBehaviour
 
     /* ───────────────────────── MOVEMENT LOGIC ───────────────────────── */
 
-    private void HandleSpeedAndRotation()
+    private void HandleMovement()
     {
         var adjustedMovement = movement;
         isAccelerating = adjustedMovement.sqrMagnitude > ZERO_F;
         SmoothSpeed(adjustedMovement.magnitude);
         HandleRotation(adjustedMovement);
+        HandleHorizontalMovement();
     }
 
     private void HandleHorizontalMovement()
