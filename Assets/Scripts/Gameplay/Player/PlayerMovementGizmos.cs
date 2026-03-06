@@ -4,8 +4,8 @@ public partial class PlayerMovement
 {
     private void OnDrawGizmos()
     {
-        Vector3 center = rb.position + Vector3.up;
-        Vector3 size = Vector3.one * 0.5f;
+        Vector3 center = rb.position + crouchCheckCenter;
+        Vector3 size = crouchCheckHalfSize * 2;
         Gizmos.DrawWireCube(center, size);
     }
 }

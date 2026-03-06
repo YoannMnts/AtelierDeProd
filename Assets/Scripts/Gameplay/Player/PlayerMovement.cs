@@ -39,9 +39,9 @@ public partial class PlayerMovement : MonoBehaviour
     [Tooltip("Horizontal movement speed applied to the player.")]
     [SerializeField] private float acceleration = 10f;
     
-    [SerializeField] private float deceleration = 10f;
+    [SerializeField, HideInInspector] private float deceleration = 10f;
     
-    [SerializeField] private float maxSpeed = 300f;
+    [SerializeField, HideInInspector] private float maxSpeed = 300f;
     
     [Tooltip("Rotation speed used to rotate the player toward movement direction.")]
     [SerializeField] private float rotationSpeed = 100f;
@@ -75,6 +75,10 @@ public partial class PlayerMovement : MonoBehaviour
     [Header("Crouch Settings")]
     [SerializeField, Range(0,1)] 
     private float crouchSpeedMultiplier;
+    [SerializeField] 
+    private Vector3 crouchCheckCenter;
+    [SerializeField] 
+    private Vector3 crouchCheckHalfSize;
     
     
     #region Colliders
@@ -129,6 +133,7 @@ public partial class PlayerMovement : MonoBehaviour
     private Vector3 lastGroundVelocity;
     private bool isAccelerating;
     private bool isCrouch;
+    private bool needToCheckCeiling;
 
     #endregion
     
@@ -214,20 +219,21 @@ public partial class PlayerMovement : MonoBehaviour
         else if (!wantToCrouch || !groundChecker.IsGrounded)
         {
             CeilingCheck();
-            if (!hasACeiling)
+            if (hasACeiling && !needToCheckCeiling)
             {
-                ActivateColliders(defaultCollider);
-                isCrouch = false;
-                OnCrouching?.Invoke(false);
+                needToCheckCeiling = true;
+                return;
             }
+            ActivateColliders(defaultCollider);
+            isCrouch = false;
+            OnCrouching?.Invoke(false);
         }
     }
 
     private void CeilingCheck()
     {
-        Vector3 center = rb.position + Vector3.up;
-        Vector3 size = Vector3.one * 0.5f;
-        Collider[] hit = Physics.OverlapBox(center, size, Quaternion.identity, groundChecker.GroundLayer);
+        var center = crouchCheckCenter + rb.position;
+        Collider[] hit = Physics.OverlapBox(center, crouchCheckHalfSize, Quaternion.identity, groundChecker.GroundLayer);
         hasACeiling = hit.Length > 0;
     }
 
@@ -261,12 +267,15 @@ public partial class PlayerMovement : MonoBehaviour
 
     private void HandleCrouch()
     {
-        if (!hasACeiling)
-            return;
-        CeilingCheck();
-        if (!hasACeiling)
+        if (needToCheckCeiling)
         {
+            CeilingCheck();
+            if (hasACeiling)
+                return;
+            needToCheckCeiling = false;
             ActivateColliders(defaultCollider);
+            isCrouch = false;
+            OnCrouching?.Invoke(false);
         }
     }
 
@@ -323,11 +332,10 @@ public partial class PlayerMovement : MonoBehaviour
     private void HandleHorizontalMovement()
     {
         // Apply horizontal velocity
-        applySpeed = isAccelerating ? acceleration : -deceleration;
+        applySpeed = acceleration;
         if (isCrouch)
             applySpeed *= crouchSpeedMultiplier;
         applySpeed *= currentSpeed;
-        applySpeed = Mathf.Clamp(applySpeed, -maxSpeed, maxSpeed);
     }
 
     private void ApplyMovement()
