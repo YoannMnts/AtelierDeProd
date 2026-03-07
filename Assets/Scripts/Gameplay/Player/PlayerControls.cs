@@ -66,6 +66,36 @@ public class PlayerControls : ScriptableObject, PlayerInputAction.IPlayerActions
             break;
       }
    }
+
+   public void EnableCodexInput(bool enable)
+   {
+      if (IsInUi)
+         return;
+      var inputActionsPlayer = inputActions.Player;
+      switch (enable)
+      {
+         case true:
+            inputActionsPlayer.Escape.Enable();
+            inputActionsPlayer.Codex.Enable();
+         
+            inputActionsPlayer.Zoom.Disable();
+            inputActionsPlayer.Interact.Disable();
+            inputActionsPlayer.Crouch.Disable();
+            inputActionsPlayer.Jump.Disable();
+            inputActionsPlayer.Move.Disable();
+            break;
+         case false:
+            inputActionsPlayer.Escape.Disable();
+         
+            inputActionsPlayer.Zoom.Enable();
+            inputActionsPlayer.Codex.Enable();
+            inputActionsPlayer.Interact.Enable();
+            inputActionsPlayer.Crouch.Enable();
+            inputActionsPlayer.Jump.Enable();
+            inputActionsPlayer.Move.Enable();
+            break;
+      }
+   }
    
    public void DisablePlayerActions()
    {

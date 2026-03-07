@@ -55,7 +55,6 @@ public class CreatureUI : MonoBehaviour
             fillCanvasGroup.alpha = 0;
             fillCanvasGroup.interactable = false;
             fillCanvasGroup.blocksRaycasts = false;
-            
         }
         else
         {
@@ -177,6 +176,7 @@ public class CreatureUI : MonoBehaviour
         {
             Destroy(t.gameObject);
         }
+        ShowOrHideCanvas();
     }
 
     private void AddOrRemoveFillImage(int amount)

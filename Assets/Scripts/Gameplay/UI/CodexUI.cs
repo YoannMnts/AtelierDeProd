@@ -48,7 +48,7 @@ public class CodexUI : MonoBehaviour
         }
         currentCodex = codex;
         wasInUi = PlayerController.Instance.PlayerControls.IsInUi;
-        PlayerController.Instance.PlayerControls.SwitchToUI(true);
+        PlayerController.Instance.PlayerControls.EnableCodexInput(true);
         var entries = Resources.LoadAll<SymbolData>("ScriptableObject/CodexEntries");
         for (int i = 0; i < entries.Length; i++)
         {
@@ -79,7 +79,7 @@ public class CodexUI : MonoBehaviour
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
         if (!wasInUi)
-            PlayerController.Instance.PlayerControls.SwitchToUI(false);
+            PlayerController.Instance.PlayerControls.EnableCodexInput(false);
         Cursor.visible = false;
     }
 }
